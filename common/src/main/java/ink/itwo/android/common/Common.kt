@@ -13,6 +13,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.DimenRes
+import androidx.fragment.app.FragmentActivity
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonElement
@@ -43,11 +44,12 @@ class CommonUtil {
         const val REGEX_MOBILE = "[1]\\d{10}"
 
 
-        val currentActivity by lazy { ActivityStack.instance.get() }
+        var currentActivity:FragmentActivity?=null
+            get() =  ActivityStack.instance.get()
 
 
         //  context
-        private fun getPackageInfo(): PackageInfo? = context?.packageName?.let { currentActivity?.packageManager?.getPackageInfo(it, PackageManager.GET_CONFIGURATIONS) }
+         fun getPackageInfo(): PackageInfo? = context?.packageName?.let { currentActivity?.packageManager?.getPackageInfo(it, PackageManager.GET_CONFIGURATIONS) }
 
         val versionName by lazy { getPackageInfo()?.versionName }
         val versionCode by lazy { if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) getPackageInfo()?.longVersionCode else getPackageInfo()?.versionCode?.toLong() }
