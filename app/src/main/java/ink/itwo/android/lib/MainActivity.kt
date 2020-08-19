@@ -1,10 +1,12 @@
 package ink.itwo.android.lib
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import ink.itwo.android.common.CommonUtil
-import ink.itwo.android.common.ktx.log
+import androidx.appcompat.app.AppCompatActivity
+import ink.itwo.android.coroutines.permissions.requestCoroutinesPermissions
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -12,13 +14,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         textView?.setOnClickListener {
-            it.log()
-            CommonUtil.versionCode.log()
-            CommonUtil.versionName.log()
-            CommonUtil.deviceHeight.log()
-            CommonUtil.deviceWith.log()
-            val packageInfo = CommonUtil.getPackageInfo()
-            packageInfo?.log()
+            aa()
         }
     }
+
+    private fun aa() {
+        CoroutineScope(Dispatchers.Main).launch {
+            val result = requestCoroutinesPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
+    }
+
 }
