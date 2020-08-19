@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CountDownTimerView">
+        <!-- 倒计时中的背景 -->
+        <attr name="resIdAfter" format="reference"/>
+        <!-- 倒计时开始前的背景 -->
+        <attr name="resIdBefore" format="reference"/>
+        <!-- 倒计时时长 -->
+        <attr name="duration" format="integer"/>
+        <!-- 开始时的文本 -->
+        <attr name="startText" format="reference"/>
+        <!-- 倒计时的文本格式 -->
+        <attr name="lastFormatArgs" format="reference"/>
+        <!--手机号验证提示文本-->
+        <attr name="hintText" format="reference"/>
+    </declare-styleable>
+</resources>

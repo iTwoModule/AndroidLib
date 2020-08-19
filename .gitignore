@@ -19,3 +19,4 @@ gradlew.bat
 gradle
 util-ktx/build
 common/build
+common-controller/build

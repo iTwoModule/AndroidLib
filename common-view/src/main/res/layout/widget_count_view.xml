@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/dp_81"
+    android:layout_height="@dimen/dp_21"
+    android:padding="@dimen/dp_1"
+    android:background="@drawable/bg_count_view"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal">
+
+    <TextView
+        android:text="-"
+        android:id="@+id/view_sub"
+        android:layout_width="@dimen/dp_21"
+        android:gravity="center"
+        android:textColor="#999999"
+        android:layout_height="@dimen/dp_21"
+        android:background="#fcfcfc" />
+
+    <View
+        android:layout_width="1px"
+        android:layout_height="match_parent"
+        android:background="#FFD0D0D0" />
+    <TextView
+        android:id="@+id/tv_result"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        tools:text="1"
+        android:gravity="center"
+        android:textColor="#FF000000"
+        android:textSize="@dimen/sp_10" />
+    <View
+        android:layout_width="1px"
+        android:layout_height="match_parent"
+        android:background="#FFD0D0D0" />
+
+    <TextView
+        android:textColor="#999999"
+        android:text="+"
+        android:gravity="center"
+        android:id="@+id/view_add"
+        android:layout_width="@dimen/dp_21"
+        android:layout_height="@dimen/dp_21"
+        android:background="#fcfcfc" />
+</LinearLayout>

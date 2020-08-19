@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 居中的图片 -->
+    <attr name="drawableCentre" format="reference"/>
+    <!-- 图片高度 -->
+    <attr name="drawableHeight" format="dimension"/>
+    <!-- 图片宽度 -->
+    <attr name="drawableWidth" format="dimension"/>
+    <!-- 局上的图片 -->
+    <attr name="drawableTop" format="reference"/>
+    <!-- 居左的图片 -->
+    <attr name="drawableLeft" format="reference"/>
+    <!-- 居右的图片 -->
+    <attr name="drawableRight" format="reference"/>
+    <!-- 居下的图片 -->
+    <attr name="drawableBottom" format="reference"/>
+    <declare-styleable name="ExtendCheckBox">
+        <attr name="drawableHeight"/>
+        <attr name="drawableWidth"/>
+        <attr name="drawableTop"/>
+        <attr name="drawableLeft"/>
+        <attr name="drawableRight"/>
+        <attr name="drawableBottom"/>
+        <attr name="drawableCentre"/>
+    </declare-styleable>
+    <declare-styleable name="ExtendRadioButton">
+        <attr name="drawableHeight"/>
+        <attr name="drawableWidth"/>
+        <attr name="drawableTop"/>
+        <attr name="drawableLeft"/>
+        <attr name="drawableRight"/>
+        <attr name="drawableBottom"/>
+    </declare-styleable>
+    <declare-styleable name="CircleImageView">
+        <attr name="civ_border_width" format="dimension"/>
+        <attr name="civ_border_color" format="color"/>
+        <attr name="civ_border_overlay" format="boolean"/>
+        <attr name="civ_fill_color" format="color"/>
+    </declare-styleable>
+</resources>

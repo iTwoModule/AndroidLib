@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CountView">
+        <!-- 初始数值 -->
+        <attr name="initialCount" format="integer"/>
+        <!-- 支持最小的数值 -->
+        <attr name="minCount" format="integer"/>
+        <!-- 支持最大的数值 -->
+        <attr name="maxCount" format="integer"/>
+        <!-- 步进值 -->
+        <attr name="stepCount" format="integer"/>
+        <!--布局-->
+        <attr name="layout_id" format="reference" />
+    </declare-styleable>
+</resources>

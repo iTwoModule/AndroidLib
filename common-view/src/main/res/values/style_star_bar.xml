@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="StarBar">
+        <!--星星总数-->
+        <attr name="numStar" format="integer"/>
+        <!--步进值-->
+        <attr name="stepHalf" format="boolean"/>
+        <!--点亮星星数-->
+        <attr name="value" format="float"/>
+        <!--点亮星星的图片资源-->
+        <attr name="progressRsdId" format="reference"/>
+        <!--亮一半的图片资源-->
+        <attr name="secondProgressResId" format="reference"/>
+        <!--没亮的图片资源-->
+        <attr name="normalResId" format="reference"/>
+        <!--星星之间的距离-->
+        <attr name="marginLeftStar" format="dimension"/>
+        <attr name="marginRightStar" format="dimension"/>
+         <!--星星的宽度-->
+        <attr name="widthStar" format="dimension"/>
+        <!--星星的高度-->
+        <attr name="heightStar" format="dimension"/>
+        <!--是否是指示器，true 不允许用户修改 -->
+        <attr name="isIndicator" format="boolean"/>
+    </declare-styleable>
+</resources>
