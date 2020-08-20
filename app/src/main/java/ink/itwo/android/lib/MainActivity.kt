@@ -23,7 +23,6 @@ class MainActivity : AppCompatActivity() {
                 requestCoroutinesPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
             }
             result.log()
-            result.log()
         }
     }
 

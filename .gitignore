@@ -22,3 +22,4 @@ common/build
 common-controller/build
 coroutines-permissions/build
 common-view/build
+coroutines-http/build
