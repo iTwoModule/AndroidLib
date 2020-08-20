@@ -2,9 +2,9 @@ package ink.itwo.android.coroutines
 
 /** Created by wang on 2020/8/20. */
 interface IResponse {
-    var responseSuccess: Boolean
-    var responseCode: Int
-    var responseMessage: String
+    fun responseSuccess(): Boolean
+    fun responseCode(): Int?
+    fun responseMessage(): String?
 
 }
 
