@@ -5,9 +5,8 @@ import androidx.fragment.app.FragmentActivity
 import java.util.*
 
 /** Created by wang on 2020/8/19. */
-class ActivityStack {
+class ActivityStack  private constructor(){
     private val activityStack: Stack<FragmentActivity> by lazy { Stack<FragmentActivity>() }
-
     companion object {
         val instance: ActivityStack by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) { ActivityStack() }
     }

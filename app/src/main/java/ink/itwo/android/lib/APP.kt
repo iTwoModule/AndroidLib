@@ -6,6 +6,8 @@ import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import ink.itwo.android.common.ActivityStack
 import ink.itwo.android.common.CommonUtil
+import ink.itwo.android.coroutines.Config
+import ink.itwo.android.coroutines.HttpManager
 
 /** Created by wang on 2020/8/19. */
 class APP : Application(), Application.ActivityLifecycleCallbacks {
@@ -13,6 +15,9 @@ class APP : Application(), Application.ActivityLifecycleCallbacks {
         super.onCreate()
         registerActivityLifecycleCallbacks(this)
         CommonUtil.init(this,debug = true)
+        HttpManager.instance.init(Config().apply {
+            root_url=""
+        })
     }
 
     override fun onActivityPaused(activity: Activity) {

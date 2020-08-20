@@ -31,6 +31,7 @@ class CommonUtil {
     companion object {
         var context: Context? = null
         var TAG = "iTwo_Log"
+        @JvmField
         var DEBUG: Boolean = false
         fun init(context: Context, TAG: String = Companion.TAG, debug: Boolean = false) {
             Companion.context = context
@@ -181,7 +182,7 @@ fun String?.toast(gravity: Int = Gravity.BOTTOM, xOffset: Int = 0, yOffset: Int 
 
 
 
-class CommonException : Exception()
+open class CommonException(message:String) : Exception(message)
 
 
 interface ImageLoader : Serializable {

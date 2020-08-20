@@ -17,7 +17,7 @@ class CoroutinesPermissions {
             fm = PermissionsFm.newInstance()
             fm.listener = { permissionsRequest, grantResults ->
                 //0代表该权限请求成功，-1代表失败
-                var result = !(grantResults?.any { it==-1 }==true)
+                var result = grantResults?.any { it==-1 } != true
                 var list = mutableListOf<String>()
 
                 grantResults?.forEachIndexed { index, i ->

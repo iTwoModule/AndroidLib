@@ -8,9 +8,6 @@ class PermissionsFm : Fragment() {
     private val REQUEST_CODE=0x96
     var listener:((MutableList<String>?,IntArray?)->Unit)?=null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
     fun request(vararg permissions: String) {
         requestPermissions(permissions,REQUEST_CODE)
     }
