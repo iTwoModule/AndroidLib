@@ -2,13 +2,14 @@ package ink.itwo.android.coroutines.dsl
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 /** Created by wang on 2020/8/20. */
 class DSL {
     private lateinit var block: suspend () -> Unit
 
-    private var start: (() -> Unit)? = null
+    private var start: ((Job?) -> Unit)? = null
 
     private var success: (() -> Unit)? = null
 
@@ -20,7 +21,7 @@ class DSL {
         this.block = block
     }
 
-    infix fun onStart(onStart: (() -> Unit)?) {
+    infix fun onStart(onStart: ((Job?) -> Unit)?) {
         this.start = onStart
     }
 
@@ -38,7 +39,7 @@ class DSL {
 
     fun onLaunch() {
         GlobalScope.launch(context = Dispatchers.Main) {
-            start?.invoke()
+            start?.invoke(coroutineContext[Job])
             try {
                 val invoke = block.invoke()
                 invoke.let { success?.invoke() } ?:error?.invoke(java.lang.Exception(""))

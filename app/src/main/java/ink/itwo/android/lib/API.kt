@@ -7,6 +7,6 @@ interface API {
     @GET("conf/userInfo.json")
     suspend fun userInfo(): HttpResult<User>
 
-    @GET("conf/banner.json")
+    @GET("conf/banne1r.json")
     suspend fun banner(): HttpResult<Banner>
 }
