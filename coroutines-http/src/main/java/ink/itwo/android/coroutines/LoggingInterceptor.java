@@ -125,6 +125,7 @@ public class LoggingInterceptor implements Interceptor {
                 response = chain.proceed(request);
             } catch (Exception e) {
                 log(e.toString());
+                throw new IOException(e.getMessage());
             }
             long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
 
