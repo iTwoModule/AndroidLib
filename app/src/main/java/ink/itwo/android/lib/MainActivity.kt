@@ -24,8 +24,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, SecondActivity::class.java))
 //            aa()
         }
-
-
     }
     private fun aa() {
        /* dsl {

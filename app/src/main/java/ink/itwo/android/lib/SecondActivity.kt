@@ -1,13 +1,12 @@
 package ink.itwo.android.lib
 
 import android.os.Bundle
-import android.text.format.DateUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import ink.itwo.android.common.ktx.TIME_PATTERN
 import ink.itwo.android.common.ktx.log
 import ink.itwo.android.common.ktx.toStr
-import ink.itwo.android.coroutines.dsl.cancelGlobalScope
+import ink.itwo.android.coroutines.dsl.cancelJob
 import ink.itwo.android.coroutines.dsl.dsl
 import ink.itwo.android.coroutines.dsl.poll
 import kotlinx.android.synthetic.main.activity_second.*
@@ -23,10 +22,12 @@ class SecondActivity : AppCompatActivity() /*CoroutineScope by MainScope()  , */
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_second)
         textView?.setOnClickListener {
-            viewModel.s()
+//            viewModel.s()
             aa()
         }
-        textView2?.setOnClickListener { cancelGlobalScope(this@SecondActivity) }
+        textView2?.setOnClickListener {
+            cancelJob("aaa")
+        }
 
     }
 
@@ -37,11 +38,28 @@ class SecondActivity : AppCompatActivity() /*CoroutineScope by MainScope()  , */
 
     private fun aa() {
         dsl {
+            onBindLife { "aaa" }
             block {
-                poll(interval = 1) { Date().toStr(TIME_PATTERN).log() }
+                poll {
+                    "aaa ${Date().toStr(TIME_PATTERN)}".log()
+                }
             }
-            onError { "onError".log() }
-            onComplete {"onComplete".log()  }
+        }
+        dsl {
+            onBindLife { "aaa" }
+            block {
+                poll {
+                    "aaa ${Date().toStr(TIME_PATTERN)}".log()
+                }
+            }
+        }
+        dsl {
+            onBindLife { "bbb" }
+            block {
+                poll {
+                    "bbb ${Date().toStr(TIME_PATTERN)}".log()
+                }
+            }
         }
     }
 

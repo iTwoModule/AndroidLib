@@ -1,14 +1,14 @@
 package ink.itwo.android.coroutines.dsl
 
 import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.produce
 import java.util.concurrent.TimeUnit
 
 /** Created by wang on 2020/8/20. */
 class DSL {
     private lateinit var block: suspend () -> Unit
 
-    private var start: ((Job?) -> String)? = null
+    private var start: ((Job?) -> Unit)? = null
+    private var bindLife: (() -> String)? = null
 
     private var success: (() -> Unit)? = null
 
@@ -20,8 +20,13 @@ class DSL {
         this.block = block
     }
 
-    infix fun onStart(onStart: ((Job?) -> String)?) {
+    infix fun onStart(onStart: ((Job?) -> Unit)?) {
         this.start = onStart
+    }
+
+    /** 绑定生命周期,需要自行接触结束 Job*/
+    infix fun onBindLife(bindLife: (() -> String)) {
+        this.bindLife = bindLife
     }
 
     infix fun onSuccess(onSuccess: (() -> Unit)?) {
@@ -39,8 +44,11 @@ class DSL {
     fun onLaunch(any: Any) {
         GlobalScope.launch(context = Dispatchers.Main) {
             val job = coroutineContext[Job]
-            val key = start?.invoke(coroutineContext[Job]) ?: any.toString()
-            GlobalScopeJobMap[key] = job
+            var key = bindLife?.invoke()
+
+            key?.let { job?.let { it1 -> add(it, it1) } }
+
+            start?.invoke(job)
             try {
                 val invoke = block.invoke()
                 invoke.let { success?.invoke() } ?: error?.invoke(java.lang.Exception(""))
@@ -48,7 +56,7 @@ class DSL {
                 error?.invoke(e)
             } finally {
                 complete?.invoke()
-                GlobalScopeJobMap.remove(key)
+                key?.let { cancelJob(it) }
             }
         }
     }
@@ -58,24 +66,38 @@ fun Any.dsl(mDsl: DSL.() -> Unit) {
     DSL().apply(mDsl).onLaunch(this)
 }
 
+
 val GlobalScopeJobMap = mutableMapOf<String, Job?>()
-fun cancelGlobalScope() {
+private const val key_suffix: String = "_GlobalScopeJobMap"
+fun Job.bindLife(key: String): Job {
+    add(key, this)
+    invokeOnCompletion { cancelJob(key) }
+    return this
+
+}
+
+fun cancelJobAll() {
     GlobalScopeJobMap.values.forEach { it?.cancel() }
     GlobalScopeJobMap.clear()
 }
 
-fun cancelGlobalScope(any: Any) {
-    val job = GlobalScopeJobMap[any.toString()]
-    job?.cancel()
-    GlobalScopeJobMap.remove(any.toString())
+fun cancelJob(key: String) {
+    val filterKeys = GlobalScopeJobMap.filterKeys { it.startsWith("$key$key_suffix") }
+    filterKeys.values.forEach { it?.cancel() }
+    filterKeys.keys.forEach { GlobalScopeJobMap.remove(it) }
 }
+
+private fun add(key: String, job: Job) {
+    GlobalScopeJobMap["$key$key_suffix${System.currentTimeMillis()}"] = job
+}
+
 
 suspend fun <T> io(block: suspend () -> T): T = withContext(Dispatchers.IO) { block() }
 suspend fun <T> ui(block: suspend () -> T): T = withContext(Dispatchers.Main) { block() }
-suspend fun <T> poll(delayed:Long=0,interval:Long=3, unit:TimeUnit=TimeUnit.SECONDS, block: suspend () -> T)= coroutineScope {
+suspend fun <T> poll(delayed: Long = 0, interval: Long = 3, unit: TimeUnit = TimeUnit.SECONDS, block: suspend () -> T) = coroutineScope {
     delay(delayed)
     while (true) {
         block()
-        delay(TimeUnit.MILLISECONDS.convert(interval,unit))
+        delay(TimeUnit.MILLISECONDS.convert(interval, unit))
     }
 }
