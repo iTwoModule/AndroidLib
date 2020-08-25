@@ -1,6 +1,8 @@
 package ink.itwo.android.coroutines.permissions
 
 import ink.itwo.android.common.ActivityStack
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -45,3 +47,9 @@ suspend fun requestCoroutinesPermissions(vararg permissions: String): Pair<Boole
             }
             coroutinesPermissions.request(*permissions)
         }
+
+suspend fun aa()= suspendCancellableCoroutine<String> {
+    it.resume("")
+
+}
+

@@ -17,6 +17,7 @@ class APP : Application(), Application.ActivityLifecycleCallbacks {
         CommonUtil.init(this,debug = true)
         HttpManager.instance.init(Config().apply {
             root_url="http://files.itwo.ink/"
+//            root_url="http://127.0.0.1:8080/apk/"
         })
     }
 

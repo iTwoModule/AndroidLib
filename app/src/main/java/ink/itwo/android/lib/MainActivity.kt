@@ -1,17 +1,19 @@
 package ink.itwo.android.lib
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import ink.itwo.android.common.ktx.log
 import ink.itwo.android.coroutines.HttpManager
 import ink.itwo.android.coroutines.dsl.dsl
+import ink.itwo.android.coroutines.dsl.io
 import ink.itwo.android.coroutines.permissions.requestCoroutinesPermissions
 import ink.itwo.android.coroutines.take
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.subscribe
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
+import kotlin.coroutines.Continuation
+import kotlin.coroutines.ContinuationInterceptor
+import kotlin.coroutines.CoroutineContext
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,17 +21,27 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         textView?.setOnClickListener {
-            aa()
+            startActivity(Intent(this, SecondActivity::class.java))
+//            aa()
         }
-    }
 
+
+    }
     private fun aa() {
-        dsl {
+       /* dsl {
             block {
-                var result = withContext(context = Dispatchers.Main) {
+
+                withTimeout(5000){
+                    repeat(100){
+                        it.toString().log()
+                    }
+                }
+
+                var storagePermission = withContext(context = Dispatchers.Main) {
                     requestCoroutinesPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 }
-                result.log()
+                storagePermission.log()
+               var a= io { HttpManager.instance.create(API::class.java).userInfo() }
                 var resultUser = withContext(Dispatchers.IO) {
                     HttpManager.instance.create(API::class.java).userInfo()
                 }
@@ -38,13 +50,11 @@ class MainActivity : AppCompatActivity() {
                 }
                 resultUser.data?.log()
                 resultBanner?.log()
-//                resultBanner.data?.log()
             }
             onError {
                 it.log()
             }
-        }
-        flow<Int> {emit(1)  }
+        }*/
 
     }
 }

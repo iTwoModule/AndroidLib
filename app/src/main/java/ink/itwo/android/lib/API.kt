@@ -9,4 +9,7 @@ interface API {
 
     @GET("conf/banne1r.json")
     suspend fun banner(): HttpResult<Banner>
+
+    @GET("http://192.168.88.101:8080/apk/delay")
+    suspend fun delay(): HttpResult<MutableMap<String, String>>
 }
