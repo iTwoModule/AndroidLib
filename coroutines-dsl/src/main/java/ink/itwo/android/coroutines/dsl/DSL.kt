@@ -41,7 +41,7 @@ class DSL {
         this.complete = onComplete
     }
 
-    fun onLaunch(any: Any) {
+    fun onLaunch() {
         GlobalScope.launch(context = Dispatchers.Main) {
             val job = coroutineContext[Job]
             var key = bindLife?.invoke()
@@ -62,8 +62,8 @@ class DSL {
     }
 }
 
-fun Any.dsl(mDsl: DSL.() -> Unit) {
-    DSL().apply(mDsl).onLaunch(this)
+fun dsl(mDsl: DSL.() -> Unit) {
+    DSL().apply(mDsl).onLaunch()
 }
 
 
