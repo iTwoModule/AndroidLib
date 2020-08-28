@@ -1,5 +1,12 @@
-package ink.itwo.android.coroutines.dsl
+package ink.itwo.android.coroutines.ktx
 
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
+import ink.itwo.android.common.handlerException
+import ink.itwo.android.common.toast
 import kotlinx.coroutines.*
 import java.util.concurrent.TimeUnit
 
@@ -100,4 +107,29 @@ suspend fun <T> poll(delayed: Long = 0, interval: Long = 3, unit: TimeUnit = Tim
         block()
         delay(TimeUnit.MILLISECONDS.convert(interval, unit))
     }
+}
+
+
+inline fun AppCompatActivity.launch(toastEnable:Boolean=true,exceptionHandler: CoroutineExceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->if(toastEnable) throwable.message?.toast() },crossinline block: suspend () -> Unit): Job {
+    return lifecycleScope.launch(exceptionHandler) { block() }
+}
+
+inline fun AppCompatActivity.launchIO(toastEnable:Boolean=true,exceptionHandler: CoroutineExceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->if(toastEnable) throwable.message?.toast() },crossinline block: suspend () -> Unit): Job {
+    return lifecycleScope.launch(exceptionHandler) { withContext(Dispatchers.IO) { block() } }
+}
+
+inline fun Fragment.launch(toastEnable:Boolean=true,exceptionHandler: CoroutineExceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->if(toastEnable) throwable.message?.toast() },crossinline block: suspend () -> Unit): Job {
+    return lifecycleScope.launch(exceptionHandler) { block() }
+}
+
+inline fun Fragment.launchIO(toastEnable:Boolean=true,exceptionHandler: CoroutineExceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->if(toastEnable) throwable.message?.toast() },crossinline block: suspend () -> Unit): Job {
+    return lifecycleScope.launch(exceptionHandler) { withContext(Dispatchers.IO) { block() } }
+}
+
+inline fun ViewModel.launch(toastEnable:Boolean=true,exceptionHandler: CoroutineExceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->if(toastEnable) throwable.message?.toast() },crossinline block: suspend () -> Unit): Job {
+    return viewModelScope.launch(exceptionHandler) { block() }
+}
+
+inline fun ViewModel.launchIO(toastEnable:Boolean=true,exceptionHandler: CoroutineExceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->if(toastEnable) throwable.message?.toast() },crossinline block: suspend () -> Unit): Job {
+    return viewModelScope.launch(exceptionHandler) { withContext(Dispatchers.IO) { block() } }
 }

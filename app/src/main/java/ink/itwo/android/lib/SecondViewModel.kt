@@ -3,7 +3,7 @@ package ink.itwo.android.lib
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ink.itwo.android.common.ktx.log
-import ink.itwo.android.coroutines.dsl.dsl
+import ink.itwo.android.coroutines.ktx.dsl
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

@@ -3,17 +3,7 @@ package ink.itwo.android.lib
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import ink.itwo.android.common.ktx.log
-import ink.itwo.android.coroutines.HttpManager
-import ink.itwo.android.coroutines.dsl.dsl
-import ink.itwo.android.coroutines.dsl.io
-import ink.itwo.android.coroutines.permissions.requestCoroutinesPermissions
-import ink.itwo.android.coroutines.take
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.*
-import kotlin.coroutines.Continuation
-import kotlin.coroutines.ContinuationInterceptor
-import kotlin.coroutines.CoroutineContext
 
 class MainActivity : AppCompatActivity() {
 
