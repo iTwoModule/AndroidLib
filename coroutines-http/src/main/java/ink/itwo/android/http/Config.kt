@@ -1,4 +1,4 @@
-package ink.itwo.android.coroutines
+package ink.itwo.android.http
 
 import com.google.gson.GsonBuilder
 import okhttp3.Interceptor

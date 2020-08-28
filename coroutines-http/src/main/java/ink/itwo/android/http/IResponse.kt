@@ -1,7 +1,4 @@
-package ink.itwo.android.coroutines
-
-import ink.itwo.android.common.RetCode
-import ink.itwo.android.common.ServerNetException
+package ink.itwo.android.http
 
 /** Created by wang on 2020/8/20. */
 interface IResponse<T> {

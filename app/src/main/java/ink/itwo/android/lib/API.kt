@@ -12,4 +12,6 @@ interface API {
 
     @GET("http://192.168.88.101:8080/apk/delay")
     suspend fun delay(): HttpResult<MutableMap<String, String>>
+
+//    http://files.itwo.ink/apk/fba18267-5eee-419f-a917-5fa4880883cb.apk
 }

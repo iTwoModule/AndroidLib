@@ -2,7 +2,7 @@ package ink.itwo.android.lib
 
 import ink.itwo.android.common.RetCode
 import ink.itwo.android.common.ServerNetException
-import ink.itwo.android.coroutines.IResponse
+import ink.itwo.android.http.IResponse
 
 /** Created by wang on 2020/8/20. */
 class HttpResult<T> : IResponse<T> {

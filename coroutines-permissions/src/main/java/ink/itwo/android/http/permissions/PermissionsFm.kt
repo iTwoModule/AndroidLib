@@ -1,4 +1,4 @@
-package ink.itwo.android.coroutines.permissions
+package ink.itwo.android.http.permissions
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

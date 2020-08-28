@@ -1,7 +1,6 @@
-package ink.itwo.android.coroutines.permissions
+package ink.itwo.android.http.permissions
 
 import ink.itwo.android.common.ActivityStack
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine

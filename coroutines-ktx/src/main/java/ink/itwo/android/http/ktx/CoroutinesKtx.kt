@@ -1,11 +1,10 @@
-package ink.itwo.android.coroutines.ktx
+package ink.itwo.android.http.ktx
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
-import ink.itwo.android.common.handlerException
 import ink.itwo.android.common.toast
 import kotlinx.coroutines.*
 import java.util.concurrent.TimeUnit
