@@ -17,7 +17,7 @@ class HttpManager private constructor() {
         val instance by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) { HttpManager() }
     }
 
-    fun init(config: Config) {
+    internal fun init(config: Config) {
         config.root_url?.let { retrofitBuilder.baseUrl(it) } ?: throw ExceptionInInitializerError("请设置root_url")
         retrofitBuilder.addConverterFactory(config.converterFactory)
 

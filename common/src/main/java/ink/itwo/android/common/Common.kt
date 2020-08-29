@@ -7,6 +7,7 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
+import android.os.Looper
 import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.View
@@ -17,6 +18,7 @@ import androidx.fragment.app.FragmentActivity
 import com.google.gson.*
 import com.google.gson.reflect.TypeToken
 import ink.itwo.android.common.CommonUtil.Companion.gson
+import ink.itwo.android.common.ktx.log
 import org.json.JSONException
 import retrofit2.HttpException
 import java.io.Serializable
@@ -83,6 +85,9 @@ class CommonUtil {
             null
         }
 
+        //json  on main thread
+        fun Any?.jsonStr(): String?=gson.toJson(this)
+
 
         // cache
         val sp: SharedPreferences? by lazy { context?.getSharedPreferences(context?.packageName ?: "", Context.MODE_PRIVATE) }
@@ -105,7 +110,7 @@ class CommonUtil {
                 is Int -> putInt(key, value)
                 is Boolean -> putBoolean(key, value)
                 is Float -> putFloat(key, value)
-                else -> putString(key, value.toJson())
+                else -> putString(key, value.jsonStr())
             }
         }
 
@@ -163,8 +168,6 @@ class CommonUtil {
 }
 
 /////////////////       全局      /////////////
-//json
-fun Any?.toJson(): String? = gson.toJson(this)
 
 //toast
 private var sToast: Toast? = Toast.makeText(CommonUtil.context, "", Toast.LENGTH_LONG)

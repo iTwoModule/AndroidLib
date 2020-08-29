@@ -1,5 +1,6 @@
 package ink.itwo.android.common.ktx
 
+import android.os.Looper
 import android.util.Log
 import ink.itwo.android.common.CommonUtil
 import java.io.File
@@ -41,11 +42,7 @@ object LogKtx {
         printDefault(tag, headString + message, write)
     }
 
-    private fun wrapperContent(
-        element: StackTraceElement,
-        TAG: String,
-        msg: String
-    ): Array<String> {
+    private fun wrapperContent(element: StackTraceElement, TAG: String, msg: String): Array<String> {
         var className = element.className
         if (className.contains("$")) {
             className = className?.split("$")?.firstOrNull()
