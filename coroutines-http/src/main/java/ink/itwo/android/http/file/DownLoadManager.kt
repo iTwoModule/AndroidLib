@@ -3,6 +3,10 @@ package ink.itwo.android.http.file
 import ink.itwo.android.common.RetCode
 import ink.itwo.android.common.ktx.log
 import ink.itwo.android.http.NetManager.context
+import ink.itwo.android.http.NetManager.executorCoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.withContext
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -32,9 +36,10 @@ class DownLoadManager {
     }
 
     suspend fun downMulti(infoList: MutableList<DownLoadInfo>, interceptors: MutableList<Interceptor>? = null): MutableList<DownLoadResult> {
+        var list = withContext(Dispatchers.Default) {
+            infoList.map { info -> async(executorCoroutineDispatcher) { down(info) } }
+        }.toMutableList().map { it.await() }.toMutableList()
         return suspendCoroutine<MutableList<DownLoadResult>> {
-
-            var list = infoList.map { info -> downInternal(info) }.toMutableList()
             it.resume(list)
         }
     }

@@ -5,8 +5,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
+import ink.itwo.android.common.CommonUtil
 import ink.itwo.android.common.toast
 import kotlinx.coroutines.*
+import java.util.concurrent.ScheduledThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 
 /** Created by wang on 2020/8/20. */
@@ -132,3 +134,7 @@ inline fun ViewModel.launch(toastEnable:Boolean=true,exceptionHandler: Coroutine
 inline fun ViewModel.launchIO(toastEnable:Boolean=true,exceptionHandler: CoroutineExceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->if(toastEnable) throwable.message?.toast() },crossinline block: suspend () -> Unit): Job {
     return viewModelScope.launch(exceptionHandler) { withContext(Dispatchers.IO) { block() } }
 }
+
+
+val executorCoroutineDispatcher = ScheduledThreadPoolExecutor(CommonUtil.maximumPoolSize).asCoroutineDispatcher()
+

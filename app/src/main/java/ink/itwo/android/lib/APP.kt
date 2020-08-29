@@ -9,6 +9,7 @@ import ink.itwo.android.common.CommonUtil
 import ink.itwo.android.http.Config
 import ink.itwo.android.http.HttpManager
 import ink.itwo.android.http.NetManager
+import ink.itwo.android.http.ktx.executorCoroutineDispatcher
 
 /** Created by wang on 2020/8/19. */
 class APP : Application(), Application.ActivityLifecycleCallbacks {
@@ -19,7 +20,7 @@ class APP : Application(), Application.ActivityLifecycleCallbacks {
         NetManager.init(this,Config().apply {
             root_url="http://files.itwo.ink/"
 //            root_url="http://127.0.0.1:8080/apk/"
-        })
+        },executorCoroutineDispatcher)
     }
 
     override fun onActivityPaused(activity: Activity) {

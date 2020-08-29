@@ -7,7 +7,6 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
-import android.os.Looper
 import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.View
@@ -17,8 +16,6 @@ import androidx.annotation.DimenRes
 import androidx.fragment.app.FragmentActivity
 import com.google.gson.*
 import com.google.gson.reflect.TypeToken
-import ink.itwo.android.common.CommonUtil.Companion.gson
-import ink.itwo.android.common.ktx.log
 import org.json.JSONException
 import retrofit2.HttpException
 import java.io.Serializable
@@ -27,6 +24,8 @@ import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.text.ParseException
+import kotlin.math.max
+import kotlin.math.min
 
 
 /** Created by wang on 2020/8/19. */
@@ -36,6 +35,7 @@ class CommonUtil {
     companion object {
         var context: Context? = null
         var TAG = "iTwo_Log"
+
         @JvmField
         var DEBUG: Boolean = false
         fun init(context: Context, TAG: String = Companion.TAG, debug: Boolean = false) {
@@ -50,12 +50,12 @@ class CommonUtil {
         const val REGEX_MOBILE = "[1]\\d{10}"
 
 
-        var currentActivity:FragmentActivity?=null
-            get() =  ActivityStack.instance.get()
+        var currentActivity: FragmentActivity? = null
+            get() = ActivityStack.instance.get()
 
 
         //  context
-         fun getPackageInfo(): PackageInfo? = context?.packageName?.let { currentActivity?.packageManager?.getPackageInfo(it, PackageManager.GET_CONFIGURATIONS) }
+        fun getPackageInfo(): PackageInfo? = context?.packageName?.let { currentActivity?.packageManager?.getPackageInfo(it, PackageManager.GET_CONFIGURATIONS) }
 
         val versionName by lazy { getPackageInfo()?.versionName }
         val versionCode by lazy { if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) getPackageInfo()?.longVersionCode else getPackageInfo()?.versionCode?.toLong() }
@@ -86,7 +86,7 @@ class CommonUtil {
         }
 
         //json  on main thread
-        fun Any?.jsonStr(): String?=gson.toJson(this)
+        fun Any?.jsonStr(): String? = gson.toJson(this)
 
 
         // cache
@@ -137,10 +137,13 @@ class CommonUtil {
 
         //device
         val dm: DisplayMetrics by lazy { DisplayMetrics().apply { currentActivity?.windowManager?.defaultDisplay?.getRealMetrics(this) } }
+
         /** 屏幕宽度*/
         val deviceWith: Int by lazy { dm.widthPixels }
+
         /** 屏幕高度*/
-        val deviceHeight: Int by lazy {   dm.heightPixels }
+        val deviceHeight: Int by lazy { dm.heightPixels }
+
         /** dp 换 px*/
         fun toPx(dpValue: Float): Int {
             val scale = context?.resources?.displayMetrics?.density ?: 0F
@@ -162,6 +165,18 @@ class CommonUtil {
         fun dimenToDp(@DimenRes id: Int): Int {
             return toDp(context?.resources?.getDimension(id) ?: 0F)
         }
+
+
+        // 线程
+
+        /** CPU数量*/
+        val CPU_COUNT: Int = Runtime.getRuntime().availableProcessors()
+
+        /** 核心线程数量大小*/
+        val corePoolSize = max(2, min(CPU_COUNT - 1, 4))
+
+        /** 线程池最大容纳线程数*/
+        val maximumPoolSize = CPU_COUNT * 2 + 1
     }
 
 
@@ -171,11 +186,12 @@ class CommonUtil {
 
 //toast
 private var sToast: Toast? = Toast.makeText(CommonUtil.context, "", Toast.LENGTH_LONG)
+
 //private var sToast:Toast?=null
 private val defaultYOffset = sToast?.yOffset
-fun String?.toast(gravity: Int = Gravity.BOTTOM, xOffset: Int = 0, yOffset: Int = defaultYOffset?:0, view: View? = null) {
+fun String?.toast(gravity: Int = Gravity.BOTTOM, xOffset: Int = 0, yOffset: Int = defaultYOffset ?: 0, view: View? = null) {
     if (sToast == null) sToast = Toast.makeText(CommonUtil.context, null, Toast.LENGTH_LONG)
-    else  {
+    else {
         sToast?.cancel()
         sToast = Toast.makeText(CommonUtil.context, "", Toast.LENGTH_LONG)
 //        sToast?.setText(this)
@@ -187,28 +203,37 @@ fun String?.toast(gravity: Int = Gravity.BOTTOM, xOffset: Int = 0, yOffset: Int 
 }
 
 
-
-open class CommonException(message:String) : Exception(message)
-open class NetException(code: Int,message: String) :CommonException(message)
+open class CommonException(message: String) : Exception(message)
+open class NetException(code: Int, message: String) : CommonException(message)
 open class ClientNetException(code: Int, message: String) : NetException(code, message)
 open class ServerNetException(code: Int, message: String) : NetException(code, message)
 
-fun Throwable.handlerException():Throwable {
-   return when(this) {
-        is ClientNetException ->{this}
-         is JsonParseException, is JSONException ,is ParseException,is JsonSyntaxException ->{ ClientNetException(RetCode.PARSE_ERROR, "数据错误") }
-       is ConnectException->{ ClientNetException(RetCode.NETWORK_ERROR, "网络错误") }
-       is UnknownHostException ->{ ClientNetException(RetCode.NETWORK_ERROR, "网络错误") }
-       is SocketTimeoutException ->{ ClientNetException(RetCode.NETWORK_ERROR, "网络错误") }
-       is HttpException ->{
-           val code = this.code()
-           if (code == 500) {
-               ClientNetException(this.code(), "服务器异常")
-           } else {
-               ClientNetException(this.code(), message())
-           }
-       }
-       else ->this
+fun Throwable.handlerException(): Throwable {
+    return when (this) {
+        is ClientNetException -> {
+            this
+        }
+        is JsonParseException, is JSONException, is ParseException, is JsonSyntaxException -> {
+            ClientNetException(RetCode.PARSE_ERROR, "数据错误")
+        }
+        is ConnectException -> {
+            ClientNetException(RetCode.NETWORK_ERROR, "网络错误")
+        }
+        is UnknownHostException -> {
+            ClientNetException(RetCode.NETWORK_ERROR, "网络错误")
+        }
+        is SocketTimeoutException -> {
+            ClientNetException(RetCode.NETWORK_ERROR, "网络错误")
+        }
+        is HttpException -> {
+            val code = this.code()
+            if (code == 500) {
+                ClientNetException(this.code(), "服务器异常")
+            } else {
+                ClientNetException(this.code(), message())
+            }
+        }
+        else -> this
     }
 }
 
@@ -241,10 +266,6 @@ object RetCode {
     /** 网络错误  */
     const val NETWORK_ERROR = 32102
 }
-
-
-
-
 
 
 interface ImageLoader : Serializable {
