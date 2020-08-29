@@ -47,17 +47,17 @@ class MainActivity : AppCompatActivity() {
         add("http://files.itwo.ink/apk/d026f158-caa9-4f39-a4b7-fdc314b2f597.apk")
         add("http://files.itwo.ink/apk/6aef88fe-d209-48e2-9aef-e264a8c43e1a.apk")
         add("http://files.itwo.ink/apk/45b93681-7f0d-4ac4-8b23-16e081662642.apk")
-//        add("http://files.itwo.ink/apk/icon/1/ic_launcher.png")
-//        add("http://files.itwo.ink/apk/icon/1/ic_launcher_1.png")
-//        add("http://files.itwo.ink/apk/icon/1/ic_launcher_2.png")
-//        add("http://files.itwo.ink/apk/icon/1/ic_launcher_3.png")
-//        add("http://files.itwo.ink/apk/icon/1/ic_launcher_4.png")
-//        add("http://files.itwo.ink/apk/icon/1/ic_launcher_5.png")
-//        add("http://files.itwo.ink/apk/icon/1/ic_launcher_6.png")
-//        add("http://files.itwo.ink/apk/icon/1/ic_launcher_7.png")
-//        add("http://files.itwo.ink/apk/icon/1/ic_launcher_8.png")
-//        add("http://files.itwo.ink/apk/icon/1/ic_launcher_9.png")
-//        add("http://files.itwo.ink/apk/icon/1/ic_launcher_10.png")
+        add("http://files.itwo.ink/apk/icon/1/ic_launcher.png")
+        add("http://files.itwo.ink/apk/icon/1/ic_launcher_1.png")
+        add("http://files.itwo.ink/apk/icon/1/ic_launcher_2.png")
+        add("http://files.itwo.ink/apk/icon/1/ic_launcher_3.png")
+        add("http://files.itwo.ink/apk/icon/1/ic_launcher_4.png")
+        add("http://files.itwo.ink/apk/icon/1/ic_launcher_5.png")
+        add("http://files.itwo.ink/apk/icon/1/ic_launcher_6.png")
+        add("http://files.itwo.ink/apk/icon/1/ic_launcher_7.png")
+        add("http://files.itwo.ink/apk/icon/1/ic_launcher_8.png")
+        add("http://files.itwo.ink/apk/icon/1/ic_launcher_9.png")
+        add("http://files.itwo.ink/apk/icon/1/ic_launcher_10.png")
     }
 
     private fun down() {
@@ -73,18 +73,5 @@ class MainActivity : AppCompatActivity() {
             resultList.jsonStr().log()
             Date().toStr(TIME_PATTERN).log()
         }
-
-
-       /* lifecycleScope.launch {
-            val infoList = urls.mapIndexed { index, s ->
-               var info= DownLoadInfo(url = s, progressListener = { c, a, b ->
-//                    "$index  bytesRead $c  contentLength $a  done $b   threadId ${Thread.currentThread().id}".log()
-                })
-                async(executorCoroutineDispatcher) { NetManager.down.down(info) }
-            }.map { it.await() }
-//            val map = NetManager.down.downMulti(infoList)
-            infoList.jsonStr().log()
-            Date().toStr(TIME_PATTERN).log()
-        }*/
     }
 }

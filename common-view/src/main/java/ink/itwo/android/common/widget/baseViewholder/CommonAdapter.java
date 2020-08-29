@@ -1,6 +1,8 @@
 package ink.itwo.android.common.widget.baseViewholder;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,12 @@ public abstract class CommonAdapter<T> extends BaseAdapter {
     protected LayoutInflater mInflater;
     protected int mlayoutId;
 
+    /**
+
+     @param context {@link androidx.appcompat.app.AppCompatActivity#onCreate(Bundle, PersistableBundle)}
+     @param datas
+     @param layoutId
+     */
     public CommonAdapter(Context context, List<T> datas, int layoutId) {
         this.mContext = context;
         this.mDatas = datas;
