@@ -44,12 +44,12 @@ class MainActivity : AppCompatActivity() {
             upMulti.jsonStr().log()
         }
 
-       /* lifecycleScope.launch {
+        lifecycleScope.launch {
            var result= NetManager.file.up(UploadInfo(url,key = UUID.randomUUID().toString()){a,b,c->
                "  bytesRead $c  contentLength $a  done $b   threadId ${Thread.currentThread().id}".log()
            }.addFile(File(path0)))
             result.jsonStr().log()
-        }*/
+        }
     }
 
     var urls = mutableListOf<String>().apply {

@@ -13,7 +13,6 @@ import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
-import java.lang.RuntimeException
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -62,7 +61,7 @@ class HttpFileManager {
      */
     suspend fun downMulti(infoList: MutableList<DownLoadInfo>, interceptors: MutableList<Interceptor>? = null): MutableList<DownLoadResult> {
         var list = withContext(Dispatchers.Default) {
-            infoList.map { info -> async(executorCoroutineDispatcher) { down(info,interceptors) } }
+            infoList.map { info -> async(executorCoroutineDispatcher) { down(info, interceptors) } }
         }.toMutableList().map { it.await() }.toMutableList()
         return suspendCoroutine<MutableList<DownLoadResult>> {
             it.resume(list)
@@ -110,13 +109,12 @@ class HttpFileManager {
     }
 
     /** 文件上传*/
-    suspend fun up(info:UploadInfo): UploadResult {
-        var result=withContext(Dispatchers.IO){upInternal(info)}
+    suspend fun up(info: UploadInfo): UploadResult {
+        var result = withContext(Dispatchers.IO) { upInternal(info) }
         return suspendCoroutine {
             it.resume(result)
         }
     }
-
 
 
     /*
@@ -133,11 +131,11 @@ class HttpFileManager {
     * */
 
     /** 多线程上传*/
-    suspend fun upMulti(infoList:MutableList<UploadInfo>):MutableList<UploadResult> {
-        var list= withContext(Dispatchers.Default){
-            infoList.map { info->async(executorCoroutineDispatcher){upInternal(info)} }.toMutableList().map { it.await() }.toMutableList()
+    suspend fun upMulti(infoList: MutableList<UploadInfo>): MutableList<UploadResult> {
+        var list = withContext(Dispatchers.Default) {
+            infoList.map { info -> async(executorCoroutineDispatcher) { upInternal(info) } }.toMutableList().map { it.await() }.toMutableList()
         }
-        return  suspendCoroutine { it.resume(list) }
+        return suspendCoroutine { it.resume(list) }
     }
 
     /** 一个请求上传多个文件*/
@@ -145,10 +143,10 @@ class HttpFileManager {
         if (Looper.getMainLooper() == Looper.myLooper()) {
             throw RuntimeException("run on ui thread!")
         }
-        var result = UploadResult(key = info.key?:info.url, path = info.files.map { it.path }.toMutableList(), result = true,code = RetCode.SUCCESS)
+        var result = UploadResult(key = info.key ?: info.url, path = info.files.map { it.path }.toMutableList(), result = true, code = RetCode.SUCCESS)
         if (info.files.isNullOrEmpty()) {
-            result.message="files is empty"
-            return  result
+            result.message = "files is empty"
+            return result
         }
 
         var client = okHttpClientBuilder.build()
@@ -156,13 +154,13 @@ class HttpFileManager {
         request.url(info.url)
         val multipartBody = MultipartBody.Builder()
         info.files.forEach { f ->
-            var requestBody:RequestBody
+            var requestBody: RequestBody
             val body = f.asRequestBody((f.mimeType ?: "application/octet-stream").toMediaType())
             if (info.progressListener != null) {
                 var bodyProgress = UploadProgressResponseBody(body, info.progressListener)
                 requestBody = bodyProgress
             } else {
-                requestBody=body
+                requestBody = body
             }
             multipartBody.addFormDataPart(info.name ?: "file", filename = f.name, body = requestBody)
         }
@@ -179,7 +177,7 @@ class HttpFileManager {
             result.result = false
             return result
         }
-        result.response=response.body?.string()?:""
+        result.response = response.body?.string() ?: ""
         return result
     }
 }
@@ -189,7 +187,7 @@ class HttpFileManager {
  * @property key String? 每个下载请求的唯一key
  * @property url String 下载地址
  * @property path String? 保存路径
- * @property progressListener Function3<Long, Long, Boolean, Unit>? 下载进度监听
+ * @property progressListener Function3<Long, Long, Boolean, Unit>? 下载进度监听 <已下载进度，总大学，是否完成>
  * @property delOld Boolean? 是否删除原有文件
  * @constructor
  */
@@ -207,7 +205,18 @@ class DownLoadInfo constructor(var key: String? = null, val url: String, val pat
  */
 class DownLoadResult constructor(var key: String? = null, var url: String, var path: String? = null, var result: Boolean, var code: Int, var message: String? = null)
 
-class UploadInfo constructor(val url: String, val key: String? = null, val name: String? = null,val progressListener: ((Long, Long, Boolean) -> Unit)? = null) {
+/**
+ *  上传信息组装
+ * @property url String  上传的目标地址
+ * @property key String?  每个请求的key
+ * @property name String? 上传文件的参数名
+ * @property progressListener Function3<Long, Long, Boolean, Unit>? 上传进度 <已上传，总大小，是否完成>
+ * @property params MutableMap<String, Any>?  请求的参数
+ * @property headers Builder?  每个请求的 headers ，可设置 token
+ * @property files MutableList<File>  上传文件的 list
+ * @constructor
+ */
+class UploadInfo constructor(val url: String, val key: String? = null, val name: String? = null, val progressListener: ((Long, Long, Boolean) -> Unit)? = null) {
     val params: MutableMap<String, Any>? by lazy { mutableMapOf<String, Any>() }
     val headers: Headers.Builder? by lazy { Headers.Builder() }
     val files = mutableListOf<File>()
@@ -217,4 +226,14 @@ class UploadInfo constructor(val url: String, val key: String? = null, val name:
     fun addFile(file: File) = apply { files.add(file) }
 }
 
-class UploadResult constructor(var key: String? = null, var path: MutableList<String>, var result: Boolean, var code: Int, var message: String? = null,var response:String?=null)
+/**
+ *  上传结果
+ * @property key String?  每个请求的唯一 key ,同 [UploadInfo] 的key
+ * @property path MutableList<String> 上传文件的本地路径
+ * @property result Boolean 请求结果
+ * @property code Int 返回的状态码
+ * @property message String? 返回的错误信息
+ * @property response String?  接口返回的结果
+ * @constructor
+ */
+class UploadResult constructor(var key: String? = null, var path: MutableList<String>, var result: Boolean, var code: Int, var message: String? = null, var response: String? = null)
