@@ -130,7 +130,7 @@ class HttpFileManager {
         }
     * */
 
-    /** 多线程上传*/
+    /** 并发上传*/
     suspend fun upMulti(infoList: MutableList<UploadInfo>): MutableList<UploadResult> {
         var list = withContext(Dispatchers.Default) {
             infoList.map { info -> async(executorCoroutineDispatcher) { upInternal(info) } }.toMutableList().map { it.await() }.toMutableList()
@@ -140,9 +140,7 @@ class HttpFileManager {
 
     /** 一个请求上传多个文件*/
     internal fun upInternal(info: UploadInfo): UploadResult {
-        if (Looper.getMainLooper() == Looper.myLooper()) {
-            throw RuntimeException("run on ui thread!")
-        }
+
         var result = UploadResult(key = info.key ?: info.url, path = info.files.map { it.path }.toMutableList(), result = true, code = RetCode.SUCCESS)
         if (info.files.isNullOrEmpty()) {
             result.message = "files is empty"
@@ -152,24 +150,24 @@ class HttpFileManager {
         var client = okHttpClientBuilder.build()
         val request = Request.Builder()
         request.url(info.url)
-        val multipartBody = MultipartBody.Builder()
+        val multipartBodyBuilder = MultipartBody.Builder()
         info.files.forEach { f ->
             var requestBody: RequestBody
             val body = f.asRequestBody((f.mimeType ?: "application/octet-stream").toMediaType())
-            if (info.progressListener != null) {
+            requestBody = if (info.progressListener != null) {
                 var bodyProgress = UploadProgressResponseBody(body, info.progressListener)
-                requestBody = bodyProgress
+                bodyProgress
             } else {
-                requestBody = body
+                body
             }
-            multipartBody.addFormDataPart(info.name ?: "file", filename = f.name, body = requestBody)
+            multipartBodyBuilder.addFormDataPart(info.name ?: "file", filename = f.name, body = requestBody)
         }
         info.params?.forEach { map ->
-            multipartBody.addFormDataPart(map.key, map.value.toString())
+            multipartBodyBuilder.addFormDataPart(map.key, map.value.toString())
         }
 
         info.headers?.let { request.headers(it.build()) }
-        request.post(multipartBody.build())
+        request.post(multipartBodyBuilder.build())
         val response = client.newCall(request.build()).execute()
         result.code = response.code
         result.message = response.message
@@ -208,7 +206,7 @@ class DownLoadResult constructor(var key: String? = null, var url: String, var p
 /**
  *  上传信息组装
  * @property url String  上传的目标地址
- * @property key String?  每个请求的key
+ * @property key String?  每个请求的key，在上传结果中会返回该 key
  * @property name String? 上传文件的参数名
  * @property progressListener Function3<Long, Long, Boolean, Unit>? 上传进度 <已上传，总大小，是否完成>
  * @property params MutableMap<String, Any>?  请求的参数
