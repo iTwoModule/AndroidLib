@@ -1,10 +1,8 @@
 package ink.itwo.android.http.file
 
-import okhttp3.Interceptor
-import okhttp3.MediaType
-import okhttp3.Response
-import okhttp3.ResponseBody
+import okhttp3.*
 import okio.*
+import java.io.IOException
 
 /** Created by wang on 2020/8/29. */
 class DownloadProgressInterceptor constructor(private val listener: ((bytesRead: Long, contentLength: Long, done: Boolean) -> Unit)? = null) : Interceptor {
@@ -41,6 +39,30 @@ class DownloadProgressResponseBody constructor(private val body: ResponseBody, p
             }
         }
     }
-
 }
+
+class UploadProgressResponseBody constructor(private val body: RequestBody, private val listener: ((bytesRead: Long, contentLength: Long, done: Boolean) -> Unit)?) : RequestBody() {
+    override fun contentType() = body.contentType()
+    override fun contentLength() = body.contentLength()
+    override fun writeTo(sink: BufferedSink) {
+        var countingSink = CountingSink(sink) {
+            listener?.invoke(it, contentLength(), it == contentLength())
+        }
+        var bufferedSink = countingSink.buffer()
+        body.writeTo(bufferedSink)
+        bufferedSink.flush()
+    }
+
+    private class CountingSink(delegate: Sink, private val listener: ((bytesRead: Long) -> Unit)?) : ForwardingSink(delegate) {
+        private var bytesWritten: Long = 0
+        @Throws(IOException::class)
+        override fun write(source: Buffer, byteCount: Long) {
+            super.write(source, byteCount)
+            bytesWritten += byteCount
+            listener?.invoke(bytesWritten)
+        }
+    }
+}
+
+
 

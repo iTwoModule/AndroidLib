@@ -117,6 +117,21 @@ class HttpFileManager {
         }
     }
 
+
+
+    /*
+        lifecycleScope.launch {
+            var infoList = paths.mapIndexed { index,it->
+                UploadInfo(url, UUID.randomUUID().toString()) { a, b, c ->
+                    "$index  bytesRead $c  contentLength $a  done $b   threadId ${Thread.currentThread().id}".log()
+                }.addFile(File(it)).addParams("name", "name1").addParams("age", 1)
+            }.toMutableList()
+            val upMulti = NetManager.file.upMulti(infoList)
+            upMulti.jsonStr().log()
+        }
+        }
+    * */
+
     /** 多线程上传*/
     suspend fun upMulti(infoList:MutableList<UploadInfo>):MutableList<UploadResult> {
         var list= withContext(Dispatchers.Default){
@@ -141,8 +156,15 @@ class HttpFileManager {
         request.url(info.url)
         val multipartBody = MultipartBody.Builder()
         info.files.forEach { f ->
+            var requestBody:RequestBody
             val body = f.asRequestBody((f.mimeType ?: "application/octet-stream").toMediaType())
-            multipartBody.addFormDataPart(info.name ?: "file", filename = f.name, body = body)
+            if (info.progressListener != null) {
+                var bodyProgress = UploadProgressResponseBody(body, info.progressListener)
+                requestBody = bodyProgress
+            } else {
+                requestBody=body
+            }
+            multipartBody.addFormDataPart(info.name ?: "file", filename = f.name, body = requestBody)
         }
         info.params?.forEach { map ->
             multipartBody.addFormDataPart(map.key, map.value.toString())

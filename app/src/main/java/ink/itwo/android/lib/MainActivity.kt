@@ -1,7 +1,6 @@
 package ink.itwo.android.lib
 
 import android.os.Bundle
-import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import ink.itwo.android.common.CommonUtil.Companion.jsonStr
@@ -34,20 +33,23 @@ class MainActivity : AppCompatActivity() {
         var url = "http://apk.itwo.ink/up_multi"
         var path0 = this.externalCacheDir?.path + "/" + "ic_launcher.png"
         var path1 = this.externalCacheDir?.path + "/" + "ic_launcher_1.png"
-        var list = arrayOf(path0, path1)
+        var paths = arrayOf(path0, path1)
         lifecycleScope.launch {
-            var infoList = list.map {
+            var infoList = paths.mapIndexed { index,it->
                 UploadInfo(url, UUID.randomUUID().toString()) { a, b, c ->
-
-                }.addFile(File(it)).addParams("name","name1").addParams("age",1)
+                    "$index  bytesRead $c  contentLength $a  done $b   threadId ${Thread.currentThread().id}".log()
+                }.addFile(File(it)).addParams("name", "name1").addParams("age", 1)
             }.toMutableList()
-            val upMulti = NetManager.down.upMulti(infoList)
+            val upMulti = NetManager.file.upMulti(infoList)
             upMulti.jsonStr().log()
         }
-//        lifecycleScope.launch {
-//        var result = NetManager.down.up(UploadInfo(url = url).addFile(File(path0)))
-//        result.jsonStr().log()
-//        }
+
+       /* lifecycleScope.launch {
+           var result= NetManager.file.up(UploadInfo(url,key = UUID.randomUUID().toString()){a,b,c->
+               "  bytesRead $c  contentLength $a  done $b   threadId ${Thread.currentThread().id}".log()
+           }.addFile(File(path0)))
+            result.jsonStr().log()
+        }*/
     }
 
     var urls = mutableListOf<String>().apply {
@@ -71,16 +73,16 @@ class MainActivity : AppCompatActivity() {
     private fun down() {
         Date().toStr(TIME_PATTERN).log()
 
-         lifecycleScope.launch {
-             val infoList = urls.mapIndexed { index, s ->
-                 DownLoadInfo(url = s, progressListener = { c, a, b ->
-                     "$index  bytesRead $c  contentLength $a  done $b   threadId ${Thread.currentThread().id}".log()
-                 })
-             }.toMutableList()
-             val resultList = NetManager.down.downMulti(infoList)
-             resultList.jsonStr().log()
-             Date().toStr(TIME_PATTERN).log()
-         }
+        lifecycleScope.launch {
+            val infoList = urls.mapIndexed { index, s ->
+                DownLoadInfo(url = s, progressListener = { c, a, b ->
+                    "$index  bytesRead $c  contentLength $a  done $b   threadId ${Thread.currentThread().id}".log()
+                })
+            }.toMutableList()
+            val resultList = NetManager.file.downMulti(infoList)
+            resultList.jsonStr().log()
+            Date().toStr(TIME_PATTERN).log()
+        }
 
         /*lifecycleScope.launch {
             (Looper.getMainLooper() == Looper.myLooper()).log()

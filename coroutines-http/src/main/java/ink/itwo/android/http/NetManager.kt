@@ -16,5 +16,5 @@ object NetManager {
         HttpManager.instance.init(config)
     }
     val http=HttpManager.instance
-    val down=HttpFileManager.instance
+    val file=HttpFileManager.instance
 }
