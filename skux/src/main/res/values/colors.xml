@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="tag_check">#FFFFFF</color>
+    <color name="tag_normal">#222222</color>
+    <color name="tag_disable">#999999</color>
+</resources>

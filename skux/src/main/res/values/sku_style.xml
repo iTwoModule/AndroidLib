@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SkuView">
+        <attr name="sku_tagBackgroundResource_check" format="reference" />
+        <attr name="sku_tagBackgroundResource_normal" format="reference" />
+        <attr name="sku_tagBackgroundResource_disenable" format="reference" />
+        <attr name="sku_tagTextColor_check" format="reference|color" />
+        <attr name="sku_tagTextColor_normal" format="reference|color" />
+        <attr name="sku_tagTextColor_disenable" format="reference|color" />
+
+        <attr name="sku_tagLayoutId" format="reference" />
+    </declare-styleable>
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="id" name="sku_tagBackgroundResource_check"/>
+    <item type="id" name="sku_tagBackgroundResource_normal"/>
+    <item type="id" name="sku_tagBackgroundResource_disenable"/>
+    <item type="id" name="sku_tagTextColor_check"/>
+    <item type="id" name="sku_tagTextColor_normal"/>
+    <item type="id" name="sku_tagTextColor_disenable"/>
+</resources>

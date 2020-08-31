@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ink.itwo.sku.view.TagView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tv_tag"
+    android:layout_width="wrap_content"
+    android:minWidth="70dp"
+    android:layout_height="wrap_content"
+    android:minHeight="25dp"
+    android:layout_gravity="center"
+    android:textColor="#222222"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp"
+    android:gravity="center"
+    android:layout_marginEnd="10dp"
+    android:layout_marginTop="10dp"
+    android:background="@drawable/tag_background_normal"
+/>

@@ -24,3 +24,5 @@ coroutines-permissions/build
 common-view/build
 coroutines-http/build
 coroutines-ktx/build
+skux/build
+qrcodex/build

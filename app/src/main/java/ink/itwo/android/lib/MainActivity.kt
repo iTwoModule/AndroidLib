@@ -10,6 +10,8 @@ import ink.itwo.android.common.ktx.toStr
 import ink.itwo.android.http.NetManager
 import ink.itwo.android.http.file.DownLoadInfo
 import ink.itwo.android.http.file.UploadInfo
+import ink.itwo.android.http.ktx.io
+import ink.itwo.android.http.ktx.launch
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.launch
 import java.io.File
@@ -43,7 +45,6 @@ class MainActivity : AppCompatActivity() {
             val upMulti = NetManager.file.upMulti(infoList)
             upMulti.jsonStr().log()
         }
-
         lifecycleScope.launch {
            var result= NetManager.file.up(UploadInfo(url,key = UUID.randomUUID().toString()){a,b,c->
                "  bytesRead $c  contentLength $a  done $b   threadId ${Thread.currentThread().id}".log()
