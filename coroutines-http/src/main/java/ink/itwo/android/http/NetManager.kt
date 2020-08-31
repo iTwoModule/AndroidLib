@@ -1,7 +1,7 @@
 package ink.itwo.android.http
 
 import android.content.Context
-import ink.itwo.android.http.file.DownLoadManager
+import ink.itwo.android.http.file.HttpFileManager
 import kotlinx.coroutines.ExecutorCoroutineDispatcher
 
 /** Created by wang on 2020/8/29. */
@@ -16,5 +16,5 @@ object NetManager {
         HttpManager.instance.init(config)
     }
     val http=HttpManager.instance
-    val down=DownLoadManager.instance
+    val down=HttpFileManager.instance
 }

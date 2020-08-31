@@ -41,10 +41,10 @@ val File.totalSize: Long
     get() = if (!exists()) 0L else if (isFile) length() else getFolderSize(this)
 
 
-val File.mimeType: String
+val File.mimeType: String?
     get() {
         var type: String? = ALL_MIME_TYPES
-        var extension = this?.extension ?: ""
+        var extension = this.extension
         if (extension.isNotEmpty()) {
             val extensionLowerCase = extension.toLowerCase(Locale.getDefault())
             val mime = MimeTypeMap.getSingleton()
@@ -53,7 +53,7 @@ val File.mimeType: String
                 type = MIME_TYPES[extensionLowerCase]
             }
         }
-        if (type == null) type = ALL_MIME_TYPES
+//        if (type == null) type = ALL_MIME_TYPES
         return type
     }
 
