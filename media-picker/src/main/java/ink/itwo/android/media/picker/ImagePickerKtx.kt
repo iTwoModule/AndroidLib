@@ -1,7 +1,9 @@
 package ink.itwo.android.media.picker
 
 import androidx.fragment.app.FragmentActivity
+import com.ypx.imagepicker.ImagePicker
 import com.ypx.imagepicker.bean.ImageItem
+import com.ypx.imagepicker.bean.MimeType
 import com.ypx.imagepicker.builder.MultiPickerBuilder
 import ink.itwo.android.common.ActivityStack
 import ink.itwo.android.common.ktx.copyAndConvert
@@ -34,10 +36,10 @@ suspend fun MultiPickerBuilder.pick(): ArrayList<ImageItem> =
             pick(activity) { c.resume(it) }
         }
 
-suspend fun MultiPickerBuilder.pickAndCopy(): MutableList<File?>? {
+/** 选择图片 - 压缩 - 复制到手机的沙盒目录*/
+suspend fun MultiPickerBuilder.compress(): MutableList<File?>? {
     var activity = ActivityStack.instance.get() as FragmentActivity
     var list = this.pick()
-//    getExternalFilesDir(null)?.absolutePath+File.separator+System.currentTimeMillis()+"temp.jpg"
     val map = list.map {
         var extension = it.mimeType.split("/").lastOrNull() ?: "jpg"
         var sandboxPath = (activity.getExternalFilesDir(null)?.absolutePath ?: "") + File.separator + UUID.randomUUID().toString() + "." + extension
@@ -46,4 +48,6 @@ suspend fun MultiPickerBuilder.pickAndCopy(): MutableList<File?>? {
     var files = withContext(Dispatchers.IO) { withContext(Dispatchers.IO) { Luban.with(activity).load(map).get() } }
     return suspendCoroutine { it.resume(files) }
 }
+
+fun pickImage(maxCount:Int): MultiPickerBuilder =ImagePicker.withMulti(WeChatPresenter()).mimeTypes(MimeType.ofImage()).setMaxCount(maxCount)
 

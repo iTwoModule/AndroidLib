@@ -3,8 +3,6 @@ package ink.itwo.android.lib
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.ypx.imagepicker.ImagePicker
-import com.ypx.imagepicker.bean.MimeType
 import ink.itwo.android.common.CommonUtil.Companion.jsonStr
 import ink.itwo.android.common.ktx.TIME_PATTERN
 import ink.itwo.android.common.ktx.log
@@ -13,12 +11,10 @@ import ink.itwo.android.http.NetManager
 import ink.itwo.android.http.file.DownLoadInfo
 import ink.itwo.android.http.file.UploadInfo
 import ink.itwo.android.http.ktx.launch
-import ink.itwo.android.media.picker.WeChatPresenter
-import ink.itwo.android.media.picker.pick
-import ink.itwo.android.media.picker.pickAndCopy
+import ink.itwo.android.media.picker.compress
+import ink.itwo.android.media.picker.pickImage
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.*
 
@@ -38,12 +34,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun imagePick() {
         launch {
-             val pickAndCopy = ImagePicker.withMulti(WeChatPresenter())
-                     .mimeTypes(MimeType.ofAll())
-                     .setMaxCount(3)
-                     .pickAndCopy()
-           var paths= pickAndCopy?.map { it?.path }
-            paths.log()
+            val paths = pickImage(3).compress()?.map { it?.path }
+            var url = "http://apk.itwo.ink/up_multi"
+            val uploadInfo = UploadInfo(url = url, key = UUID.randomUUID().toString())
+            paths?.forEach { path -> path?.let { uploadInfo.addFile(File(it)) } }
+            val result = NetManager.file.up(uploadInfo)
+            result.jsonStr().log()
         }
     }
 
