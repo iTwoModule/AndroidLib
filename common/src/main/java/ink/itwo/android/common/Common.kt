@@ -16,6 +16,8 @@ import androidx.annotation.DimenRes
 import androidx.fragment.app.FragmentActivity
 import com.google.gson.*
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.ExecutorCoroutineDispatcher
+import kotlinx.coroutines.asCoroutineDispatcher
 import org.json.JSONException
 import retrofit2.HttpException
 import java.io.Serializable
@@ -24,6 +26,7 @@ import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.text.ParseException
+import java.util.concurrent.ScheduledThreadPoolExecutor
 import kotlin.math.max
 import kotlin.math.min
 
@@ -35,13 +38,15 @@ class CommonUtil {
     companion object {
         var context: Context? = null
         var TAG = "iTwo_Log"
+        lateinit var imageLoaderDefault: ImageLoader
 
         @JvmField
         var DEBUG: Boolean = false
-        fun init(context: Context, TAG: String = Companion.TAG, debug: Boolean = false) {
+        fun init(context: Context, TAG: String = Companion.TAG, debug: Boolean = false, imageLoaderDefault: ImageLoader) {
             Companion.context = context
             Companion.TAG = TAG
             DEBUG = debug
+            this.imageLoaderDefault = imageLoaderDefault
         }
 
 
@@ -177,9 +182,10 @@ class CommonUtil {
 
         /** 线程池最大容纳线程数*/
         val maximumPoolSize = CPU_COUNT * 2 + 1
+
+
+         var executorCoroutineDispatcher: ExecutorCoroutineDispatcher= ScheduledThreadPoolExecutor(maximumPoolSize).asCoroutineDispatcher()
     }
-
-
 }
 
 /////////////////       全局      /////////////
@@ -275,3 +281,4 @@ interface ImageLoader : Serializable {
 
     fun clearMemoryCache()
 }
+

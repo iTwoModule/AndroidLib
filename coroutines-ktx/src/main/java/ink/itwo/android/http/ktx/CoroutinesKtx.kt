@@ -136,5 +136,3 @@ inline fun ViewModel.launchIO(toastEnable:Boolean=true,exceptionHandler: Corouti
 }
 
 
-val executorCoroutineDispatcher = ScheduledThreadPoolExecutor(CommonUtil.maximumPoolSize).asCoroutineDispatcher()
-

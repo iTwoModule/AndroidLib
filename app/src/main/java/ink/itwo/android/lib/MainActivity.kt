@@ -3,6 +3,8 @@ package ink.itwo.android.lib
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.ypx.imagepicker.ImagePicker
+import com.ypx.imagepicker.bean.MimeType
 import ink.itwo.android.common.CommonUtil.Companion.jsonStr
 import ink.itwo.android.common.ktx.TIME_PATTERN
 import ink.itwo.android.common.ktx.log
@@ -10,8 +12,9 @@ import ink.itwo.android.common.ktx.toStr
 import ink.itwo.android.http.NetManager
 import ink.itwo.android.http.file.DownLoadInfo
 import ink.itwo.android.http.file.UploadInfo
-import ink.itwo.android.http.ktx.io
 import ink.itwo.android.http.ktx.launch
+import ink.itwo.android.media.picker.WeChatPresenter
+import ink.itwo.android.media.picker.pick
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.launch
 import java.io.File
@@ -26,7 +29,20 @@ class MainActivity : AppCompatActivity() {
 //            startActivity(Intent(this, SecondActivity::class.java))
 //         aa()
 //            down()
-            up()
+//            up()
+            imagePick()
+        }
+    }
+
+    private fun imagePick() {
+        launch {
+            val imageItem = ImagePicker.withMulti(WeChatPresenter())
+                    .mimeTypes(MimeType.ofAll())
+                    .setMaxCount(1)
+                    .pick()
+                    .firstOrNull()
+
+            imageItem?.jsonStr()?.log()
         }
     }
 
@@ -37,7 +53,7 @@ class MainActivity : AppCompatActivity() {
         var path1 = this.externalCacheDir?.path + "/" + "ic_launcher_1.png"
         var paths = arrayOf(path0, path1)
         lifecycleScope.launch {
-            var infoList = paths.mapIndexed { index,it->
+            var infoList = paths.mapIndexed { index, it ->
                 UploadInfo(url, UUID.randomUUID().toString()) { a, b, c ->
                     "$index  bytesRead $c  contentLength $a  done $b   threadId ${Thread.currentThread().id}".log()
                 }.addFile(File(it)).addParams("name", "name1").addParams("age", 1)
@@ -46,9 +62,9 @@ class MainActivity : AppCompatActivity() {
             upMulti.jsonStr().log()
         }
         lifecycleScope.launch {
-           var result= NetManager.file.up(UploadInfo(url,key = UUID.randomUUID().toString()){a,b,c->
-               "  bytesRead $c  contentLength $a  done $b   threadId ${Thread.currentThread().id}".log()
-           }.addFile(File(path0)))
+            var result = NetManager.file.up(UploadInfo(url, key = UUID.randomUUID().toString()) { a, b, c ->
+                "  bytesRead $c  contentLength $a  done $b   threadId ${Thread.currentThread().id}".log()
+            }.addFile(File(path0)))
             result.jsonStr().log()
         }
     }
