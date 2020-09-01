@@ -45,7 +45,7 @@ suspend fun MultiPickerBuilder.compress(): MutableList<File?>? {
         var sandboxPath = (activity.getExternalFilesDir(null)?.absolutePath ?: "") + File.separator + UUID.randomUUID().toString() + "." + extension
         it.uri.copyAndConvert(activity, sandboxPath)
     }
-    var files = withContext(Dispatchers.IO) { withContext(Dispatchers.IO) { Luban.with(activity).load(map).get() } }
+    var files = withContext(Dispatchers.IO) {  Luban.with(activity).load(map).get() }
     return suspendCoroutine { it.resume(files) }
 }
 

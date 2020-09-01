@@ -1,3 +1,4 @@
+include ':mvvm'
 rootProject.name='AndroidLib'
 include ':app'
 include ':common'
