@@ -15,8 +15,10 @@ import ink.itwo.android.http.file.UploadInfo
 import ink.itwo.android.http.ktx.launch
 import ink.itwo.android.media.picker.WeChatPresenter
 import ink.itwo.android.media.picker.pick
+import ink.itwo.android.media.picker.pickAndCopy
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.*
 
@@ -36,13 +38,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun imagePick() {
         launch {
-            val imageItem = ImagePicker.withMulti(WeChatPresenter())
-                    .mimeTypes(MimeType.ofAll())
-                    .setMaxCount(1)
-                    .pick()
-                    .firstOrNull()
-
-            imageItem?.jsonStr()?.log()
+             val pickAndCopy = ImagePicker.withMulti(WeChatPresenter())
+                     .mimeTypes(MimeType.ofAll())
+                     .setMaxCount(3)
+                     .pickAndCopy()
+           var paths= pickAndCopy?.map { it?.path }
+            paths.log()
         }
     }
 

@@ -1,12 +1,11 @@
 package ink.itwo.android.common.ktx
 
+import android.content.Context
+import android.net.Uri
 import android.webkit.MimeTypeMap
 import ink.itwo.android.common.ktx.FileKtx.getFolderSize
 import ink.itwo.android.common.ktx.FileKtx.getFormatFileSize
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileNotFoundException
-import java.io.IOException
+import java.io.*
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.text.DecimalFormat
@@ -82,6 +81,19 @@ fun File.hash(algorithm: Hash = Hash.SHA1): String {
     }
 
     return ""
+}
+
+/** 复制文件到沙盒路径*/
+//outFilePath 输出文件路径,因为android10的关系,所以该路径只可为应用内沙盒路径
+//getExternalFilesDir(null)?.absolutePath+File.separator+System.currentTimeMillis()+"temp.jpg"
+fun Uri.copyAndConvert(context: Context, outFilePath: String): File {
+    val pfd = context.contentResolver.openFileDescriptor(this, "r")//r代表读操作
+    FileInputStream(pfd?.fileDescriptor).use { fis ->
+        FileOutputStream(File(outFilePath)).use { fos ->
+            fis.copyTo(fos)
+        }
+    }
+    return File(outFilePath)
 }
 
 private const val ALL_MIME_TYPES = "*/*"

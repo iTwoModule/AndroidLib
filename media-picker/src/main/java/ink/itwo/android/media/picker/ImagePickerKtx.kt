@@ -1,8 +1,14 @@
 package ink.itwo.android.media.picker
 
+import androidx.fragment.app.FragmentActivity
 import com.ypx.imagepicker.bean.ImageItem
 import com.ypx.imagepicker.builder.MultiPickerBuilder
 import ink.itwo.android.common.ActivityStack
+import ink.itwo.android.common.ktx.copyAndConvert
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import top.zibin.luban.Luban
+import java.io.File
 import java.util.*
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -27,4 +33,17 @@ suspend fun MultiPickerBuilder.pick(): ArrayList<ImageItem> =
             var activity = ActivityStack.instance.get()
             pick(activity) { c.resume(it) }
         }
+
+suspend fun MultiPickerBuilder.pickAndCopy(): MutableList<File?>? {
+    var activity = ActivityStack.instance.get() as FragmentActivity
+    var list = this.pick()
+//    getExternalFilesDir(null)?.absolutePath+File.separator+System.currentTimeMillis()+"temp.jpg"
+    val map = list.map {
+        var extension = it.mimeType.split("/").lastOrNull() ?: "jpg"
+        var sandboxPath = (activity.getExternalFilesDir(null)?.absolutePath ?: "") + File.separator + UUID.randomUUID().toString() + "." + extension
+        it.uri.copyAndConvert(activity, sandboxPath)
+    }
+    var files = withContext(Dispatchers.IO) { withContext(Dispatchers.IO) { Luban.with(activity).load(map).get() } }
+    return suspendCoroutine { it.resume(files) }
+}
 
