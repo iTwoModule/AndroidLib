@@ -1,8 +1,10 @@
 package ink.itwo.android.lib
 
 import android.os.Bundle
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import ink.itwo.android.common.CommonUtil.Companion.jsonStr
 import ink.itwo.android.common.ktx.TIME_PATTERN
 import ink.itwo.android.common.ktx.log
@@ -29,6 +31,14 @@ class MainActivity : AppCompatActivity() {
 //            down()
 //            up()
             imagePick()
+        }
+        var image = findViewById<ImageView>(R.id.image)
+        image.post {
+            Glide.with(this)
+                    .load("https://user-gold-cdn.xitu.io/2019/10/5/16d9a973df760121?imageslim")
+                    .error(R.mipmap.ic_launcher)
+                    .placeholder(R.mipmap.ic_launcher)
+                    .into(image)
         }
     }
 
