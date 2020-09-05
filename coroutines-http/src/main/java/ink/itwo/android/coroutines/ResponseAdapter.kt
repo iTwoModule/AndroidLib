@@ -1,4 +1,4 @@
-package ink.itwo.android.http
+package ink.itwo.android.coroutines
 
 import com.google.gson.JsonParseException
 import com.google.gson.TypeAdapter

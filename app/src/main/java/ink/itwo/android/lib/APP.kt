@@ -9,8 +9,8 @@ import androidx.fragment.app.FragmentActivity
 import ink.itwo.android.common.ActivityStack
 import ink.itwo.android.common.CommonUtil
 import ink.itwo.android.common.ImageLoader
-import ink.itwo.android.http.Config
-import ink.itwo.android.http.NetManager
+import ink.itwo.android.coroutines.Config
+import ink.itwo.android.coroutines.NetManager
 
 /** Created by wang on 2020/8/19. */
 class APP : Application(), Application.ActivityLifecycleCallbacks {

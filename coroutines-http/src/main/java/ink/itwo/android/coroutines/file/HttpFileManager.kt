@@ -1,11 +1,11 @@
-package ink.itwo.android.http.file
+package ink.itwo.android.coroutines.file
 
 import android.os.Looper
 import ink.itwo.android.common.RetCode
 import ink.itwo.android.common.ktx.log
 import ink.itwo.android.common.ktx.mimeType
-import ink.itwo.android.http.NetManager.context
-import ink.itwo.android.http.NetManager.executorCoroutineDispatcher
+import ink.itwo.android.coroutines.NetManager.context
+import ink.itwo.android.coroutines.NetManager.executorCoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext

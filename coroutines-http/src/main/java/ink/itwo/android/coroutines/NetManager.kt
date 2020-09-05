@@ -1,7 +1,7 @@
-package ink.itwo.android.http
+package ink.itwo.android.coroutines
 
 import android.content.Context
-import ink.itwo.android.http.file.HttpFileManager
+import ink.itwo.android.coroutines.file.HttpFileManager
 import kotlinx.coroutines.ExecutorCoroutineDispatcher
 
 /** Created by wang on 2020/8/29. */

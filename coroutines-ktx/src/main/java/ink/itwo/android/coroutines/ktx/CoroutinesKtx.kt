@@ -1,14 +1,12 @@
-package ink.itwo.android.http.ktx
+package ink.itwo.android.coroutines.ktx
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
-import ink.itwo.android.common.CommonUtil
 import ink.itwo.android.common.toast
 import kotlinx.coroutines.*
-import java.util.concurrent.ScheduledThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 
 /** Created by wang on 2020/8/20. */
@@ -102,12 +100,21 @@ private fun add(key: String, job: Job) {
 
 suspend fun <T> io(block: suspend () -> T): T = withContext(Dispatchers.IO) { block() }
 suspend fun <T> ui(block: suspend () -> T): T = withContext(Dispatchers.Main) { block() }
-suspend fun <T> poll(delayed: Long = 0, interval: Long = 3, unit: TimeUnit = TimeUnit.SECONDS, block: suspend () -> T) = coroutineScope {
-    delay(delayed)
-    while (true) {
-        block()
+suspend fun  poll(delayed: Long = 0, interval: Long = 3, unit: TimeUnit = TimeUnit.SECONDS, block: suspend (Int) -> Boolean?) = coroutineScope {
+    if (delayed!=0L)delay(delayed)
+    var count=-1
+    var condition:Boolean?=true
+    while (condition==true) {
+        count++
+        condition = block(count)
         delay(TimeUnit.MILLISECONDS.convert(interval, unit))
     }
+    cancel()
+}
+//intervalRange(long start, long count, long initialDelay, long period, TimeUnit unit) {
+suspend fun <T> interval(delayed: Long = 0, interval: Long = 3, unit: TimeUnit = TimeUnit.SECONDS, block: suspend () -> T) = coroutineScope {
+    if (delayed!=0L)delay(delayed)
+
 }
 
 

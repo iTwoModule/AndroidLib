@@ -3,9 +3,9 @@ package ink.itwo.android.lib
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import ink.itwo.android.http.HttpManager
-import ink.itwo.android.http.ktx.cancelJob
-import ink.itwo.android.http.ktx.launch
+import ink.itwo.android.coroutines.HttpManager
+import ink.itwo.android.coroutines.ktx.cancelJob
+import ink.itwo.android.coroutines.ktx.launch
 import kotlinx.android.synthetic.main.activity_second.*
 import kotlinx.coroutines.*
 

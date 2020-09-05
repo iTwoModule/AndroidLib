@@ -1,4 +1,4 @@
-package ink.itwo.android.http
+package ink.itwo.android.coroutines
 
 /** Created by wang on 2020/8/20. */
 interface IResponse<T> {

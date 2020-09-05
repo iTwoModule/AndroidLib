@@ -1,4 +1,4 @@
-package ink.itwo.android.http.permissions
+package ink.itwo.android.coroutines.permissions
 
 import ink.itwo.android.common.ActivityStack
 import kotlinx.coroutines.suspendCancellableCoroutine

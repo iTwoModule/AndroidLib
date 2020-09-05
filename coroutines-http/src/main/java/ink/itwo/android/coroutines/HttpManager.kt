@@ -1,4 +1,4 @@
-package ink.itwo.android.http
+package ink.itwo.android.coroutines
 
 import ink.itwo.android.common.CommonUtil
 import okhttp3.Cache
