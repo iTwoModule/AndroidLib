@@ -1,6 +1,5 @@
 package ink.itwo.android.lib
 
-import android.icu.text.DateIntervalFormat
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
@@ -13,22 +12,18 @@ import ink.itwo.android.common.ktx.toStr
 import ink.itwo.android.coroutines.NetManager
 import ink.itwo.android.coroutines.file.DownLoadInfo
 import ink.itwo.android.coroutines.file.UploadInfo
-import ink.itwo.android.coroutines.ktx.GlobalScopeJobMap
-import ink.itwo.android.coroutines.ktx.io
 import ink.itwo.android.coroutines.ktx.launch
 import ink.itwo.android.coroutines.ktx.poll
 import ink.itwo.android.media.picker.compress
 import ink.itwo.android.media.picker.pickImage
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
-import kotlin.concurrent.timer
 
 class MainActivity : AppCompatActivity() {
-var pollJob:Job?=null
+    var pollJob: Job? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -49,11 +44,7 @@ var pollJob:Job?=null
                     .into(image)
         }
         image.setOnClickListener {
-            pollJob= launch {
-                poll(interval = 1) {count->
-                        count.log()
-                  return@poll count<10
-                }
+            pollJob = launch {
             }
         }
     }

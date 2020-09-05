@@ -7,6 +7,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import ink.itwo.android.common.toast
 import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.ticker
 import java.util.concurrent.TimeUnit
 
 /** Created by wang on 2020/8/20. */
@@ -100,21 +101,37 @@ private fun add(key: String, job: Job) {
 
 suspend fun <T> io(block: suspend () -> T): T = withContext(Dispatchers.IO) { block() }
 suspend fun <T> ui(block: suspend () -> T): T = withContext(Dispatchers.Main) { block() }
-suspend fun  poll(delayed: Long = 0, interval: Long = 3, unit: TimeUnit = TimeUnit.SECONDS, block: suspend (Int) -> Boolean?) = coroutineScope {
+
+/**
+ *  轮询
+ * @param delayed Long  初始时延时时间
+ * @param interval Long  间隔时间
+ * @param unit TimeUnit
+ * @param block SuspendFunction1<Int, Boolean?>
+ */
+suspend fun  poll(delayed: Long = 0, interval: Long = 3, unit: TimeUnit = TimeUnit.SECONDS, block: suspend (Int) -> Boolean) = coroutineScope {
     if (delayed!=0L)delay(delayed)
     var count=-1
-    var condition:Boolean?=true
-    while (condition==true) {
+    var condition =true
+    while (condition) {
         count++
         condition = block(count)
         delay(TimeUnit.MILLISECONDS.convert(interval, unit))
     }
     cancel()
 }
-//intervalRange(long start, long count, long initialDelay, long period, TimeUnit unit) {
-suspend fun <T> interval(delayed: Long = 0, interval: Long = 3, unit: TimeUnit = TimeUnit.SECONDS, block: suspend () -> T) = coroutineScope {
-    if (delayed!=0L)delay(delayed)
 
+/**
+ *   计时器
+ * @param period Long 间隔时间
+ * @param unit TimeUnit
+ * @param block SuspendFunction1<Long, T>
+ */
+suspend fun <T> interval(start: Long = 0, count: Long = 0, period:Long=1,unit: TimeUnit = TimeUnit.SECONDS, block: suspend (Long) -> T) = coroutineScope {
+    for (i in start until start + count) {
+        block(i)
+        delay(TimeUnit.MILLISECONDS.convert(period, unit))
+    }
 }
 
 
