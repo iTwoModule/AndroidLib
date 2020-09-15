@@ -78,8 +78,8 @@ class CommonUtil {
         //json
         val gson: Gson by lazy { GsonBuilder()./*serializeNulls().*/create() }
 
-        inline fun <reified T> String?.toObj(): T? = try {
-            gson.fromJson<T>(this, object : TypeToken<T>() {}.type)
+        inline fun <T> String?.toObj(type:Type?=object : TypeToken<T>() {}.type): T? = try {
+            gson.fromJson<T>(this, type)
         } catch (e: JsonSyntaxException) {
             null
         }
@@ -131,9 +131,9 @@ class CommonUtil {
             res as? T
         }
 
-        inline fun <reified T> cacheGet(key: String, type: Type): T? = sp.run {
+         fun <T> cacheGet(key: String, type: Type): T? = sp.run {
             val string = this?.getString(key, null)
-            string?.toObj<T>()
+            string?.toObj<T>(type)
         }
 
         fun cacheRemove(key: String) = sp?.edit { remove(key) }

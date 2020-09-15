@@ -12,7 +12,9 @@ import ink.itwo.android.common.ktx.toStr
 import ink.itwo.android.coroutines.NetManager
 import ink.itwo.android.coroutines.file.DownLoadInfo
 import ink.itwo.android.coroutines.file.UploadInfo
+import ink.itwo.android.coroutines.ktx.io
 import ink.itwo.android.coroutines.ktx.launch
+import ink.itwo.android.coroutines.ktx.launchIO
 import ink.itwo.android.coroutines.ktx.poll
 import ink.itwo.android.media.picker.compress
 import ink.itwo.android.media.picker.pickImage
@@ -45,11 +47,19 @@ class MainActivity : AppCompatActivity() {
         }
         image.setOnClickListener {
             pollJob = launch {
+                poll {
+                    true
+                }
             }
         }
     }
 
     private fun imagePick() {
+        launch {
+           var user= io { NetManager.http.create(API::class.java).userInfo().take() }
+        }
+
+
         launch {
             val paths = pickImage(3).compress()?.map { it?.path }
             var url = "http://apk.itwo.ink/up_multi"

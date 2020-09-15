@@ -16,7 +16,7 @@ open abstract class CommonFragment<MActivity : CommonActivity> : SwipeBackFragme
     protected var viewRoot: View? = null
     /** 是否支持滑动返回  */
     @JvmField
-    protected var hasSwipeBackEnable = true
+    protected var hasSwipeBackEnable = false
 
     abstract val layoutId:Int
 

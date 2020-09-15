@@ -38,7 +38,7 @@ dependencies {
 
     compileOnly 'androidx.viewpager2:viewpager2:1.0.0'
     compileOnly 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.2'
-    compileOnly 'com.google.android.material:material:1.2.0'
+    compileOnly 'com.google.android.material:material:1.2.1'
 
     compileOnly project (':common')
 }
