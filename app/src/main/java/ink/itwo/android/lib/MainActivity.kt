@@ -5,6 +5,8 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import ink.itwo.android.common.CommonUtil.Companion.jsonStr
 import ink.itwo.android.common.ktx.TIME_PATTERN
 import ink.itwo.android.common.ktx.log
@@ -14,15 +16,16 @@ import ink.itwo.android.coroutines.file.DownLoadInfo
 import ink.itwo.android.coroutines.file.UploadInfo
 import ink.itwo.android.coroutines.ktx.io
 import ink.itwo.android.coroutines.ktx.launch
-import ink.itwo.android.coroutines.ktx.launchIO
 import ink.itwo.android.coroutines.ktx.poll
 import ink.itwo.android.media.picker.compress
 import ink.itwo.android.media.picker.pickImage
+import ink.itwo.android.skeleton.SkeletonRecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
     var pollJob: Job? = null
@@ -52,11 +55,18 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+        recyclerView.adapter = object : BaseQuickAdapter<String, BaseViewHolder>(R.layout.item_main,ArrayList<String>(Collections.nCopies(10,""))) {
+            override fun convert(holder: BaseViewHolder, item: String) {
+            }
+
+        }
+        val skeleton = SkeletonRecyclerView().bind(recyclerView).load(R.layout.item_skeleton_main).show()
+        recyclerView?.postDelayed({skeleton.hide()},5000)
     }
 
     private fun imagePick() {
         launch {
-           var user= io { NetManager.http.create(API::class.java).userInfo().take() }
+            var user = io { NetManager.http.create(API::class.java).userInfo().take() }
         }
 
 

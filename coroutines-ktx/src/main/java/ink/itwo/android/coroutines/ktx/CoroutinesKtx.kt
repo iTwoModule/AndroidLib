@@ -59,6 +59,7 @@ class DSL {
             try {
                  block.invoke()
             } catch (e: Exception) {
+                e.printStackTrace()
                 error?.invoke(e)
             } finally {
                 complete?.invoke()

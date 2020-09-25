@@ -7,11 +7,12 @@ import me.yokeyword.fragmentation_swipeback.SwipeBackActivity
 open class CommonActivity : SwipeBackActivity() {
     protected var mActivity: CommonActivity? = null
     /** 是否支持滑动返回  */
-    protected var hasSwipeBackEnable = true
+    protected var hasSwipeBackEnable = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mActivity = this
+        setSwipeBackEnable(false)
     }
 
     override fun setSwipeBackEnable(enable: Boolean) {

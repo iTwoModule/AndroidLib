@@ -282,3 +282,4 @@ interface ImageLoader : Serializable {
     fun clearMemoryCache()
 }
 
+typealias  ViewAction= (View)->Unit

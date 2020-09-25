@@ -37,8 +37,9 @@ dependencies {
     implementation project(':coroutines-http')
     implementation project(':coroutines-ktx')
     implementation project(':media-picker')
+    implementation project(':skeleton')
 
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.7'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.2'
 
     def lifecycle_version = "2.2.0"
@@ -50,7 +51,9 @@ dependencies {
 
     implementation 'com.github.bumptech.glide:glide:4.9.0'
 
-    implementation 'com.google.android.material:material:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
+
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.2'
 
     // Lifecycles only (without ViewModel or LiveData)
 //    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"

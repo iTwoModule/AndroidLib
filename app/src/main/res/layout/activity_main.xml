@@ -22,25 +22,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn1"
-        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_10"
-        android:layout_marginBottom="@dimen/dp_20"
-        android:elevation="@dimen/dp_2"
-        android:gravity="center"
-        android:insetTop="@dimen/dp_0"
-        android:insetBottom="0dp"
-        android:text="MaterialButton"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/white"
-        android:textSize="@dimen/sp_12"
-        app:backgroundTint="@android:color/black"
-        app:cornerRadius="@dimen/dp_10"
-        app:strokeColor="@color/black"
-        app:strokeWidth="1dp" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:layout_width="@dimen/dp_100"
@@ -54,5 +35,10 @@
         app:shapeAppearanceOverlay="@style/circleImage"
         android:layout_marginTop="@dimen/dp_20" />
 
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/recyclerView"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_weight="1" />
 </LinearLayout>

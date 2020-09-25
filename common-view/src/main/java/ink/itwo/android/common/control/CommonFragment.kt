@@ -16,13 +16,13 @@ open abstract class CommonFragment<MActivity : CommonActivity> : SwipeBackFragme
     protected var viewRoot: View? = null
     /** 是否支持滑动返回  */
     @JvmField
-    protected var hasSwipeBackEnable = false
+    protected var hasSwipeBackEnable = true
 
     abstract val layoutId:Int
 
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setSwipeBackEnable(false)
+        setSwipeBackEnable(true)
     }
 
     override fun onAttach(activity: Activity) {
