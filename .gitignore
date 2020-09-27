@@ -1,5 +1,5 @@
 *.iml
-.gradle
+#.gradle
 /local.properties
 /.idea/caches
 /.idea/libraries
@@ -14,9 +14,9 @@
 .cxx
 app/build
 .idea
-gradlew
-gradlew.bat
-gradle
+#gradlew
+#gradlew.bat
+#gradle
 util-ktx/build
 common/build
 common-controller/build
