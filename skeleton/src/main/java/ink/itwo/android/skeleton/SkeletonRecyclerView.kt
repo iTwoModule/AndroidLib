@@ -12,7 +12,10 @@ class SkeletonRecyclerView : Skeleton<RecyclerView> {
     private lateinit var adapterOrigin: RecyclerView.Adapter<RecyclerView.ViewHolder>
     private val adapterSkeleton: RecyclerView.Adapter<RecyclerView.ViewHolder> by lazy {
         object : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+            override fun onCreateViewHolder(
+                parent: ViewGroup,
+                viewType: Int
+            ): RecyclerView.ViewHolder {
                 var v = LayoutInflater.from(parent.context).inflate(layoutId, parent, false)
                 return VH(v)
             }
@@ -31,7 +34,8 @@ class SkeletonRecyclerView : Skeleton<RecyclerView> {
 
     override fun bind(v: RecyclerView): SkeletonRecyclerView {
         recyclerView = v
-        adapterOrigin = recyclerView.adapter ?: throw RuntimeException("recyclerView adapter is null")
+        adapterOrigin =
+            recyclerView.adapter ?: throw RuntimeException("recyclerView adapter is null")
         return this
     }
 
@@ -43,11 +47,16 @@ class SkeletonRecyclerView : Skeleton<RecyclerView> {
 
     override fun show(): SkeletonRecyclerView {
         recyclerView.adapter = adapterSkeleton
+        recyclerView.suppressLayout(false)
         return this
     }
 
     override fun hide() {
-        recyclerView.adapter = adapterOrigin
-        adapterOrigin.notifyDataSetChanged()
+        val a = recyclerView.adapter
+        if (a === adapterSkeleton) {
+            recyclerView.suppressLayout(true)
+            recyclerView.adapter = adapterOrigin
+            adapterOrigin.notifyDataSetChanged()
+        }
     }
 }

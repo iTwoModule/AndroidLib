@@ -2,6 +2,7 @@ package ink.itwo.android.skeleton
 
 import android.view.View
 import androidx.annotation.LayoutRes
+import androidx.recyclerview.widget.RecyclerView
 
 /** Created by wang on 2020/9/25. */
 interface Skeleton<T:View> {
