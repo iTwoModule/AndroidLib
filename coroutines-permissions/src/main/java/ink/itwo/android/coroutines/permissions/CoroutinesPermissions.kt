@@ -47,8 +47,4 @@ suspend fun requestCoroutinesPermissions(vararg permissions: String): Pair<Boole
             coroutinesPermissions.request(*permissions)
         }
 
-suspend fun aa()= suspendCancellableCoroutine<String> {
-    it.resume("")
-
-}
 

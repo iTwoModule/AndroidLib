@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,35 +9,43 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/tvSuccess"
+        android:layout_width="@dimen/dp_150"
+        android:layout_height="@dimen/dp_45"
+        android:layout_marginTop="@dimen/dp_20"
         android:background="@color/black"
-        android:padding="30dp"
-        android:text="Hello World!"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:gravity="center"
+        android:text="APISuccess"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/tvError"
+        android:layout_width="@dimen/dp_150"
+        android:layout_height="@dimen/dp_45"
+        android:layout_marginTop="@dimen/dp_20"
+        android:background="@color/black"
+        android:gravity="center"
+        android:text="APIError"
+        android:textColor="@color/white" />
+    <TextView
+        android:id="@+id/tvNetWordError"
+        android:layout_width="@dimen/dp_150"
+        android:layout_height="@dimen/dp_45"
+        android:layout_marginTop="@dimen/dp_20"
+        android:background="@color/black"
+        android:gravity="center"
+        android:text="NetWorError"
+        android:textColor="@color/white" />
+      <TextView
+        android:id="@+id/tvLaunch"
+        android:layout_width="@dimen/dp_150"
+        android:layout_height="@dimen/dp_45"
+        android:layout_marginTop="@dimen/dp_20"
+        android:background="@color/black"
+        android:gravity="center"
+        android:text="launch"
+        android:textColor="@color/white" />
 
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:layout_width="@dimen/dp_100"
-        android:layout_height="@dimen/dp_100"
-        android:src="@mipmap/ic_launcher"
-        app:strokeColor="@android:color/holo_red_dark"
-        app:strokeWidth="@dimen/dp_5"
-        android:padding="@dimen/dp_5"
-        android:id="@+id/image"
-        android:scaleType="fitXY"
-        app:shapeAppearanceOverlay="@style/circleImage"
-        android:layout_marginTop="@dimen/dp_20" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:id="@+id/recyclerView"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:layout_weight="1" />
 </LinearLayout>

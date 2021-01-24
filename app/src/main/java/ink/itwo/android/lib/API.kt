@@ -4,14 +4,12 @@ import retrofit2.http.GET
 
 /** Created by wang on 2020/6/25. */
 interface API {
-    @GET("conf/userInfo.json")
-    suspend fun userInfo(): HttpResult<User>
+    @GET("json/success_user.json")
+    suspend fun userInfoSuccess(): HttpResult<User>
 
-    @GET("conf/banne1r.json")
-    suspend fun banner(): HttpResult<Banner>
+    @GET("json/error_user.json")
+    suspend fun userInfoError(): HttpResult<User>
+    @GET("json/error_use11r.json")
+    suspend fun netWorkError(): HttpResult<User>
 
-    @GET("http://192.168.88.101:8080/apk/delay")
-    suspend fun delay(): HttpResult<MutableMap<String, String>>
-
-//    http://files.itwo.ink/apk/fba18267-5eee-419f-a917-5fa4880883cb.apk
 }

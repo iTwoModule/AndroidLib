@@ -48,7 +48,7 @@ class DSL {
         this.complete = onComplete
     }
 
-    fun onLaunch(coroutineScope:CoroutineScope) {
+    fun onLaunch(coroutineScope: CoroutineScope) {
         coroutineScope.launch(context = Dispatchers.Main) {
             val job = coroutineContext[Job]
             var key = bindLife?.invoke()
@@ -57,7 +57,7 @@ class DSL {
 
             start?.invoke(job)
             try {
-                 block.invoke()
+                block.invoke()
             } catch (e: Exception) {
                 e.printStackTrace()
                 error?.invoke(e)
@@ -72,12 +72,15 @@ class DSL {
 fun GlobalScope.dsl(mDsl: DSL.() -> Unit) {
     DSL().apply(mDsl).onLaunch(this)
 }
+
 fun ViewModel.dsl(mDsl: DSL.() -> Unit) {
     DSL().apply(mDsl).onLaunch(this.viewModelScope)
 }
+
 fun Fragment.dsl(mDsl: DSL.() -> Unit) {
     DSL().apply(mDsl).onLaunch(this.lifecycleScope)
 }
+
 fun AppCompatActivity.dsl(mDsl: DSL.() -> Unit) {
     DSL().apply(mDsl).onLaunch(this.lifecycleScope)
 }
@@ -144,52 +147,44 @@ suspend fun <T> interval(start: Long = 0, count: Long = 0, period: Long = 1, uni
 }
 
 
-//inline fun AppCompatActivity.launch(toastEnable: Boolean = true, exceptionHandler: CoroutineExceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable -> if (toastEnable) throwable.message?.toast() }, crossinline block: suspend () -> Unit): Job {
-//    return lifecycleScope.launch(exceptionHandler) { block() }
-//}
-//
-//inline fun AppCompatActivity.launchIO(toastEnable: Boolean = true, exceptionHandler: CoroutineExceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable -> if (toastEnable) throwable.message?.toast() }, crossinline block: suspend () -> Unit): Job {
-//    return lifecycleScope.launch(exceptionHandler) { withContext(Dispatchers.IO) { block() } }
-//}
-
 fun AppCompatActivity.launch(toastEnable: Boolean = true, start: (() -> Unit)? = null, error: ((Exception) -> Unit)? = null, complete: (() -> Unit)? = null, block: suspend () -> Unit): Job {
-    return lifecycleScope.job(Dispatchers.Main,block, error, toastEnable, complete)
+    return lifecycleScope.job(Dispatchers.Main, block, start, error, toastEnable, complete)
 }
 
 fun AppCompatActivity.launchIO(toastEnable: Boolean = true, start: (() -> Unit)? = null, error: ((Exception) -> Unit)? = null, complete: (() -> Unit)? = null, block: suspend () -> Unit): Job {
-    return lifecycleScope.job(Dispatchers.IO,block, error, toastEnable, complete)
+    return lifecycleScope.job(Dispatchers.IO, block, start, error, toastEnable, complete)
 }
 
 fun Fragment.launch(toastEnable: Boolean = true, start: (() -> Unit)? = null, error: ((Exception) -> Unit)? = null, complete: (() -> Unit)? = null, block: suspend () -> Unit): Job {
-    return lifecycleScope.job(Dispatchers.Main,block, error, toastEnable, complete)
+    return lifecycleScope.job(Dispatchers.Main, block, start, error, toastEnable, complete)
 }
 
 fun Fragment.launchIO(toastEnable: Boolean = true, start: (() -> Unit)? = null, error: ((Exception) -> Unit)? = null, complete: (() -> Unit)? = null, block: suspend () -> Unit): Job {
-    return lifecycleScope.job(Dispatchers.IO,block, error, toastEnable, complete)
+    return lifecycleScope.job(Dispatchers.IO, block, start, error, toastEnable, complete)
 }
 
 fun ViewModel.launch(toastEnable: Boolean = true, start: (() -> Unit)? = null, error: ((Exception) -> Unit)? = null, complete: (() -> Unit)? = null, block: suspend () -> Unit): Job {
-    return viewModelScope.job(Dispatchers.Main,block, error, toastEnable, complete)
+    return viewModelScope.job(Dispatchers.Main, block, start, error, toastEnable, complete)
 }
 
 fun ViewModel.launchIO(toastEnable: Boolean = true, start: (() -> Unit)? = null, error: ((Exception) -> Unit)? = null, complete: (() -> Unit)? = null, block: suspend () -> Unit): Job {
-    return viewModelScope.job(Dispatchers.IO,block, error, toastEnable, complete)
+    return viewModelScope.job(Dispatchers.IO, block, start, error, toastEnable, complete)
 }
 
-fun CoroutineScope.job(context: CoroutineContext, block: suspend () -> Unit, error: ((Exception) -> Unit)?, toastEnable: Boolean, complete: (() -> Unit)?): Job {
-    lateinit var job: Job
-    try {
-        job = launch { withContext(context) { block() } }
-    } catch (e: Exception) {
-        error?.invoke(e)
-        if (toastEnable) {
-            e.message.toast()
+fun CoroutineScope.job(context: CoroutineContext, block: suspend () -> Unit, start: (() -> Unit)? = null, error: ((Exception) -> Unit)?, toastEnable: Boolean, complete: (() -> Unit)?): Job {
+    start?.invoke()
+    return launch {
+        try {
+            withContext(context) { block() }
+        } catch (e: Exception) {
+            error?.invoke(e)
+            if (toastEnable) {
+                e.message.toast()
+            }
+        } finally {
+            complete?.invoke()
         }
-
-    } finally {
-        complete?.invoke()
     }
-    return job
 }
 
 

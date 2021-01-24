@@ -2,16 +2,16 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
-apply plugin: 'com.github.dcendents.android-maven'
-group='com.github.iTwoModule'
+// apply plugin: 'com.github.dcendents.android-maven'
+// group='com.github.iTwoModule'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
@@ -34,7 +34,7 @@ dependencies {
 
     compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     compileOnly 'androidx.appcompat:appcompat:1.2.0'
-    compileOnly 'androidx.core:core-ktx:1.3.1'
+    compileOnly 'androidx.core:core-ktx:1.3.2'
 
     api 'me.xuexuan:fragmentationx:1.0.6'
     api 'me.xuexuan:fragmentationx-swipeback:1.0.6'

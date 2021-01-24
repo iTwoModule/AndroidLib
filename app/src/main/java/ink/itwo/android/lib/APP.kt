@@ -59,3 +59,5 @@ class APP : Application(), Application.ActivityLifecycleCallbacks {
 
     }
 }
+
+val api:API by lazy { NetManager.http.create(API::class.java) }

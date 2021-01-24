@@ -87,7 +87,7 @@ open abstract class CommonDialog<MActivity : Context> : DialogFragment() {
             //设置dialog宽度
             when (width) {
                 MATCH_PARENT -> {
-                    lp.width = context?.resources?.displayMetrics?.widthPixels ?: 0 - 2 * margin
+                    lp.width =( context?.resources?.displayMetrics?.widthPixels ?: 0) - 2 * margin
                 }
                 WRAP_CONTENT -> {
                     lp.width = WindowManager.LayoutParams.WRAP_CONTENT

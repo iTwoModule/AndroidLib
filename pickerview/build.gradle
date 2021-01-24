@@ -1,17 +1,16 @@
 apply plugin: 'com.android.library'
 
-apply plugin: 'com.github.dcendents.android-maven'
-group='com.github.iTwoModule'
+
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        targetSdkVersion 30
+        versionCode 34
+        versionName "4.1.9"
     }
     buildTypes {
         release {
@@ -23,28 +22,10 @@ android {
         abortOnError false
     }
 }
-/*
 
-allprojects {
-    tasks.withType(Javadoc) {//兼容中文字符
-        options{
-            encoding "UTF-8"
-            charSet 'UTF-8'
-            links "http://docs.oracle.com/javase/7/docs/api"
-        }
-    }
-}
-publish {
-    userOrg = 'contrarywind'//bintray.com 用户名/组织名 user/org name
-    groupId = 'com.contrarywind'//JCenter上显示的路径 path
-    artifactId = 'Android-PickerView'//项目名称 project name
-    publishVersion = '3.2.7'//版本号 version code
-    desc = 'this is a pickerview for android'//项目描述 description
-    website = 'https://github.com/Contrarywind/Android-PickerView' //项目网址链接 link
-}
-*/
 
 dependencies {
-//    compile fileTree(include: ['*.jar'], dir: 'libs')
-
+    api project(path: ':wheelview')
+    implementation "androidx.annotation:annotation:1.1.0"
+//    implementation 'com.android.support:support-annotations:28.0.0'
 }
