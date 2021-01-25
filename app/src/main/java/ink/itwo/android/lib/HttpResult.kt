@@ -1,7 +1,7 @@
 package ink.itwo.android.lib
 
 import ink.itwo.android.common.RetCode
-import ink.itwo.android.common.ServerNetException
+import ink.itwo.android.common.ServerException
 import ink.itwo.android.coroutines.IResponse
 
 /** Created by wang on 2020/8/20. */
@@ -18,7 +18,7 @@ class HttpResult<T> : IResponse<T> {
 
 fun <T> IResponse<T>.take(): T? {
     if (!responseSuccess()) {
-        throw ServerNetException(responseCode() ?: RetCode.UNKNOWN, responseMessage() ?: "")
+        throw ServerException(responseCode() ?: RetCode.UNKNOWN, responseMessage() ?: "")
     }
     return this.responseData()
 }

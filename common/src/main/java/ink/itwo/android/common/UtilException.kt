@@ -8,41 +8,40 @@ import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.text.ParseException
-/** Created by wang on 1/24/21. */
 
+/** Created by wang on 1/24/21. */
 
 
 open class CommonException(message: String) : Exception(message)
 open class NetException(code: Int, message: String) : CommonException(message)
-open class ClientNetException(code: Int, message: String) : NetException(code, message)
-open class ServerNetException(code: Int, message: String) : NetException(code, message)
+open class ClientException(code: Int, message: String) : NetException(code, message)
+open class ServerException(code: Int, message: String) : NetException(code, message)
 
-fun Throwable.handlerException(): Throwable {
+fun Throwable.handlerException(): Exception {
     return when (this) {
-        is ClientNetException -> {
+        is ClientException -> {
             this
         }
         is JsonParseException, is JSONException, is ParseException, is JsonSyntaxException -> {
-            ClientNetException(RetCode.PARSE_ERROR, "数据错误")
+            ClientException(RetCode.PARSE_ERROR, "数据错误")
         }
         is ConnectException -> {
-            ClientNetException(RetCode.NETWORK_ERROR, "网络错误")
+            ClientException(RetCode.NETWORK_ERROR, "网络错误")
         }
         is UnknownHostException -> {
-            ClientNetException(RetCode.NETWORK_ERROR, "网络错误")
+            ClientException(RetCode.NETWORK_ERROR, "网络错误")
         }
         is SocketTimeoutException -> {
-            ClientNetException(RetCode.NETWORK_ERROR, "网络错误")
+            ClientException(RetCode.NETWORK_ERROR, "网络错误")
         }
         is HttpException -> {
-            val code = this.code()
-            if (code == 500) {
-                ClientNetException(this.code(), "服务器异常")
-            } else {
-                ClientNetException(this.code(), message())
+            when (this.code()) {
+                500 -> ServerException(this.code(), "服务器异常")
+                404 -> ServerException(this.code(), "网络错误")
+                else -> this
             }
         }
-        else -> this
+        else -> CommonException(message ?: "")
     }
 }
 

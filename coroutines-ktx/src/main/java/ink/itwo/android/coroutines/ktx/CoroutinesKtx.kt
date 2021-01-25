@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
+import ink.itwo.android.common.handlerException
 import ink.itwo.android.common.toast
 import kotlinx.coroutines.*
 import java.util.concurrent.TimeUnit
@@ -177,9 +178,10 @@ fun CoroutineScope.job(context: CoroutineContext, block: suspend () -> Unit, sta
         try {
             withContext(context) { block() }
         } catch (e: Exception) {
-            error?.invoke(e)
+            val handlerException = e.handlerException()
+            error?.invoke(handlerException)
             if (toastEnable) {
-                e.message.toast()
+                handlerException.message.toast()
             }
         } finally {
             complete?.invoke()

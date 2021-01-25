@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentActivity
 import ink.itwo.android.common.ActivityStack
 import ink.itwo.android.common.Common
 import ink.itwo.android.common.ImageLoader
+import ink.itwo.android.common.executorCoroutineDispatcher
 import ink.itwo.android.coroutines.Config
 import ink.itwo.android.coroutines.NetManager
 

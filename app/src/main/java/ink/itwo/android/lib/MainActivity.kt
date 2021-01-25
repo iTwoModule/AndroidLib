@@ -25,13 +25,20 @@ class MainActivity : AppCompatActivity() {
         launch {
             val result = io { api.userInfoSuccess() }
             result.data?.jsonStr().log()
+            result.data?.jsonStr().log()
+            result.data?.jsonStr().log()
+            result.data?.jsonStr().log()
         }
     }
 
     fun error() {
-        launch(toastEnable = false) {
+        launch() {
             val result = io { api.userInfoError() }.take()
             result?.jsonStr()?.log()
+            result?.jsonStr()?.log()
+            result?.jsonStr()?.log()
+            result?.jsonStr()?.log()
+
         }
         /*dsl {
             block {
@@ -43,6 +50,9 @@ class MainActivity : AppCompatActivity() {
     fun netWordError() {
         launch {
             val user = io { api.netWorkError() }.take()
+            user?.jsonStr()?.log()
+            user?.jsonStr()?.log()
+            user?.jsonStr()?.log()
             user?.jsonStr()?.log()
         }
     }
