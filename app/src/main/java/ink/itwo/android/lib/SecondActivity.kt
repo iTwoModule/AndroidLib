@@ -4,10 +4,10 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import ink.itwo.android.common.CommonUtil.Companion.jsonStr
-import ink.itwo.android.common.ktx.TIME_PATTERN
+import ink.itwo.android.common.jsonStr
+import ink.itwo.android.common.TIME_PATTERN
 import ink.itwo.android.common.ktx.log
-import ink.itwo.android.common.ktx.toStr
+import ink.itwo.android.common.toStr
 import ink.itwo.android.coroutines.NetManager
 import ink.itwo.android.coroutines.file.DownLoadInfo
 import ink.itwo.android.coroutines.file.UploadInfo

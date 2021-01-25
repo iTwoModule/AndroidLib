@@ -6,7 +6,7 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 
 /** Created by wang on 2019-11-09. */
-object Base64Util {
+object UtilBase64 {
 
     /** 将文件转成base64 字符串*/
     @Throws(Exception::class)

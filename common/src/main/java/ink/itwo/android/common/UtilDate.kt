@@ -1,4 +1,4 @@
-package ink.itwo.android.common.ktx
+package ink.itwo.android.common
 
 import java.text.SimpleDateFormat
 import java.util.*

@@ -6,7 +6,7 @@ import com.ypx.imagepicker.bean.ImageItem
 import com.ypx.imagepicker.bean.MimeType
 import com.ypx.imagepicker.builder.MultiPickerBuilder
 import ink.itwo.android.common.ActivityStack
-import ink.itwo.android.common.ktx.copyAndConvert
+import ink.itwo.android.common.copyAndConvert
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import top.zibin.luban.Luban

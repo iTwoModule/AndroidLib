@@ -1,8 +1,7 @@
 package ink.itwo.android.common.ktx
 
-import android.os.Looper
 import android.util.Log
-import ink.itwo.android.common.CommonUtil
+import ink.itwo.android.common.Common
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -13,7 +12,7 @@ import java.util.*
 /** Created by wang on 2020/5/6. */
 
 
-fun Any?.log(tag: String = CommonUtil.TAG, write: Boolean? = false) {
+fun Any?.log(tag: String = Common.TAG, write: Boolean? = false) {
     LogKtx.print(tag, this.toString(), write ?: false)
 }
 
@@ -24,11 +23,11 @@ object LogKtx {
     private const val JSON_INDENT = 4
     private val LINE_SEPARATOR = System.getProperty("line.separator")
     fun log(s: String) {
-        print(CommonUtil.TAG, s, write = false)
+        print(Common.TAG, s, write = false)
     }
 
     fun print(tag: String, message: String?, write: Boolean) {
-        if (!CommonUtil.DEBUG) return
+        if (!Common.DEBUG) return
         val stackTrace = Thread.currentThread().stackTrace
         val targetElement = stackTrace[STACK_TRACE_INDEX]
         targetElement?.let { print(it, tag, message ?: "", write) }
@@ -82,7 +81,7 @@ object LogKtx {
             var dateTime: String = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())
 
 //            val externalFilesDir = Utils?.context?.externalCacheDir
-            val externalFilesDir = CommonUtil?.context?.getExternalFilesDir("logger")
+            val externalFilesDir = Common?.context?.getExternalFilesDir("logger")
             var file = File(externalFilesDir?.path, "/logger_$date.log")
             fileOutputStream = FileOutputStream(file, true)
             fileOutputStream.write("$dateTime --> $content \n".toByteArray())

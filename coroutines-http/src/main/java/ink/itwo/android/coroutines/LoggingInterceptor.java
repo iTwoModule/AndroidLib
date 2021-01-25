@@ -12,7 +12,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
 import java.util.concurrent.TimeUnit;
 
-import ink.itwo.android.common.CommonUtil;
+import ink.itwo.android.common.Common;
 import okhttp3.Connection;
 import okhttp3.Headers;
 import okhttp3.Interceptor;
@@ -299,7 +299,7 @@ public class LoggingInterceptor implements Interceptor {
     }
 
     public static void log(String message) {
-        if (!CommonUtil.DEBUG) return;
+        if (!Common.DEBUG) return;
         if (message != null && message.length() > 4000) {
             split("iTwo_http", message);
         } else {

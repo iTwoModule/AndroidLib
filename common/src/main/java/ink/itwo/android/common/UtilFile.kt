@@ -1,10 +1,10 @@
-package ink.itwo.android.common.ktx
+package ink.itwo.android.common
 
 import android.content.Context
 import android.net.Uri
 import android.webkit.MimeTypeMap
-import ink.itwo.android.common.ktx.FileKtx.getFolderSize
-import ink.itwo.android.common.ktx.FileKtx.getFormatFileSize
+import ink.itwo.android.common.UtilFile.getFolderSize
+import ink.itwo.android.common.UtilFile.getFormatFileSize
 import java.io.*
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
@@ -12,7 +12,7 @@ import java.text.DecimalFormat
 import java.util.*
 
 /** Created by wang on 2020/5/6. */
-object FileKtx {
+object UtilFile {
     fun getFormatFileSize(size: Long, unit: Int = 1000): String {
         val formatter = DecimalFormat("####.00")
         return when {

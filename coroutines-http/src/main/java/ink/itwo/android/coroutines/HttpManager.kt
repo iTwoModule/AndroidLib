@@ -1,6 +1,6 @@
 package ink.itwo.android.coroutines
 
-import ink.itwo.android.common.CommonUtil
+import ink.itwo.android.common.Common
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -25,11 +25,11 @@ class HttpManager private constructor() {
         okHttpClientBuilder.writeTimeout(config.defaultWriteTimeout, TimeUnit.SECONDS)
         okHttpClientBuilder.readTimeout(config.defaultReadTimeout, TimeUnit.SECONDS)
 
-        okHttpClientBuilder.cache(Cache(File(CommonUtil.context?.cacheDir, config.cacheFileName), config.cacheSize * 1024 * 1024))
+        okHttpClientBuilder.cache(Cache(File(Common.context?.cacheDir, config.cacheFileName), config.cacheSize * 1024 * 1024))
 
         config.interceptors.forEach { okHttpClientBuilder.addInterceptor(it) }
         config.networkInterceptors.forEach { okHttpClientBuilder.addNetworkInterceptor(it) }
-        if (CommonUtil.DEBUG) okHttpClientBuilder.addInterceptor(LoggingInterceptor())
+        if (Common.DEBUG) okHttpClientBuilder.addInterceptor(LoggingInterceptor())
         retrofitBuilder.client(okHttpClientBuilder.build())
         retrofit = retrofitBuilder.build()
     }
