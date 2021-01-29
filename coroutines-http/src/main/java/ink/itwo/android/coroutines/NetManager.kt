@@ -9,6 +9,9 @@ object NetManager {
     var base_url:String?=null
     var context:Context?=null
     lateinit var executorCoroutineDispatcher:ExecutorCoroutineDispatcher
+    /**
+     * executorCoroutineDispatcher: ExecutorCoroutineDispatcher by lazy { ScheduledThreadPoolExecutor(Common.maximumPoolSize).asCoroutineDispatcher() }
+     * */
     fun init(context: Context,config: Config,executorCoroutineDispatcher: ExecutorCoroutineDispatcher) {
         base_url=config.root_url
         this.context=context

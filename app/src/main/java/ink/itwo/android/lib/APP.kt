@@ -12,12 +12,14 @@ import ink.itwo.android.common.*
 import ink.itwo.android.coroutines.Config
 import ink.itwo.android.coroutines.NetManager
 import ink.itwo.android.coroutines.ktx.CoroutinesKtx
+import kotlinx.coroutines.asCoroutineDispatcher
 import org.json.JSONException
 import retrofit2.HttpException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.text.ParseException
+import java.util.concurrent.ScheduledThreadPoolExecutor
 
 /** Created by wang on 2020/8/19. */
 class APP : Application(), Application.ActivityLifecycleCallbacks {
@@ -28,7 +30,7 @@ class APP : Application(), Application.ActivityLifecycleCallbacks {
         NetManager.init(this, Config().apply {
             root_url = "http://files.itwo.ink/"
 //            root_url="http://127.0.0.1:8080/apk/"
-        }, Common.executorCoroutineDispatcher)
+        },  ScheduledThreadPoolExecutor(Common.maximumPoolSize).asCoroutineDispatcher() )
 
         CoroutinesKtx.init(handlerException = handlerException, toastInvoke = toastInvoke)
     }
