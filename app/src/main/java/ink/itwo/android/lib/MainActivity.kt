@@ -9,6 +9,7 @@ import ink.itwo.android.common.unicode
 import ink.itwo.android.coroutines.file.HttpFileManager
 import ink.itwo.android.coroutines.file.UploadInfo
 import ink.itwo.android.coroutines.ktx.*
+import ink.itwo.android.coroutines.permissions.requestCoroutinesPermissions
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 
@@ -57,8 +58,7 @@ class MainActivity : AppCompatActivity() {
 
     fun testLaunch() {
         launch {
-            val i = 1 / 0
-            i.log()
+            val requestCoroutinesPermissions = requestCoroutinesPermissions(this, android.Manifest.permission.CAMERA, android.Manifest.permission.FACTORY_TEST)
         }
     }
 
