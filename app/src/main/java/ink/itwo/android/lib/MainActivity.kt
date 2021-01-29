@@ -5,10 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import ink.itwo.android.common.jsonStr
 import ink.itwo.android.common.ktx.log
 import ink.itwo.android.common.unicode
-import ink.itwo.android.coroutines.ktx.io
-import ink.itwo.android.coroutines.ktx.launch
+import ink.itwo.android.coroutines.ktx.*
 import kotlinx.android.synthetic.main.activity_main.*
-import okio.utf8Size
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,16 +16,12 @@ class MainActivity : AppCompatActivity() {
         tvError?.setOnClickListener { error() }
         tvNetWordError?.setOnClickListener { netWordError() }
         tvLaunch?.setOnClickListener { testLaunch() }
-       "".unicode
+        "".unicode
     }
 
     fun success() {
         launch {
             val result = io { api.userInfoSuccess() }
-            result.data?.jsonStr().log()
-            result.data?.jsonStr().log()
-            result.data?.jsonStr().log()
-            result.data?.jsonStr().log()
         }
     }
 

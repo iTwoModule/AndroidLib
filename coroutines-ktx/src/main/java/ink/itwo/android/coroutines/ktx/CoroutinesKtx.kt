@@ -5,8 +5,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
-import ink.itwo.android.common.handlerException
-import ink.itwo.android.common.toast
 import kotlinx.coroutines.*
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.CoroutineContext
@@ -178,10 +176,10 @@ fun CoroutineScope.job(context: CoroutineContext, block: suspend () -> Unit, sta
         try {
             withContext(context) { block() }
         } catch (e: Exception) {
-            val handlerException = e.handlerException()
-            error?.invoke(handlerException)
+            val exception = CoroutinesKtx.handlerException?.invoke(e) ?: e
+            error?.invoke(exception)
             if (toastEnable) {
-                handlerException.message.toast()
+                exception.message?.let { ui { CoroutinesKtx.toastInvoke?.invoke(it) } }
             }
         } finally {
             complete?.invoke()
@@ -189,5 +187,11 @@ fun CoroutineScope.job(context: CoroutineContext, block: suspend () -> Unit, sta
     }
 }
 
-
-
+object CoroutinesKtx {
+     var handlerException: ((Exception) -> Exception)? = null
+     var toastInvoke: ((String) -> Unit)? = null
+    fun init(handlerException: ((Exception) -> Exception), toastInvoke: ((String) -> Unit)) {
+        this.handlerException = handlerException
+        this.toastInvoke=toastInvoke
+    }
+}

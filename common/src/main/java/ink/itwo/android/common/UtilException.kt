@@ -17,6 +17,7 @@ open class NetException(code: Int, message: String) : CommonException(message)
 open class ClientException(code: Int, message: String) : NetException(code, message)
 open class ServerException(code: Int, message: String) : NetException(code, message)
 
+/*
 fun Throwable.handlerException(): Exception {
     return when (this) {
         is ClientException -> {
@@ -44,6 +45,7 @@ fun Throwable.handlerException(): Exception {
         else -> CommonException(message ?: "")
     }
 }
+*/
 
 object RetCode {
     //HTTP 状态

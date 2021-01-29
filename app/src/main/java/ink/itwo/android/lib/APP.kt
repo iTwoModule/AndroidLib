@@ -6,23 +6,66 @@ import android.content.Context
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.fragment.app.FragmentActivity
-import ink.itwo.android.common.ActivityStack
-import ink.itwo.android.common.Common
-import ink.itwo.android.common.ImageLoader
-import ink.itwo.android.common.executorCoroutineDispatcher
+import com.google.gson.JsonParseException
+import com.google.gson.JsonSyntaxException
+import ink.itwo.android.common.*
 import ink.itwo.android.coroutines.Config
 import ink.itwo.android.coroutines.NetManager
+import ink.itwo.android.coroutines.ktx.CoroutinesKtx
+import org.json.JSONException
+import retrofit2.HttpException
+import java.net.ConnectException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
+import java.text.ParseException
 
 /** Created by wang on 2020/8/19. */
 class APP : Application(), Application.ActivityLifecycleCallbacks {
     override fun onCreate() {
         super.onCreate()
         registerActivityLifecycleCallbacks(this)
-        Common.init(this,debug = true,imageLoaderDefault = imageLoader)
-        NetManager.init(this,Config().apply {
-            root_url="http://files.itwo.ink/"
+        Common.init(this, debug = true, imageLoaderDefault = imageLoader)
+        NetManager.init(this, Config().apply {
+            root_url = "http://files.itwo.ink/"
 //            root_url="http://127.0.0.1:8080/apk/"
-        },Common.executorCoroutineDispatcher)
+        }, Common.executorCoroutineDispatcher)
+
+        CoroutinesKtx.init(handlerException = handlerException, toastInvoke = toastInvoke)
+    }
+
+    var handlerException = object : (Exception) -> Exception {
+        override fun invoke(p1: Exception): Exception {
+            return when (p1) {
+                is ClientException -> {
+                    p1;
+                }
+                is JsonParseException, is JSONException, is ParseException, is JsonSyntaxException -> {
+                    ClientException(RetCode.PARSE_ERROR, "数据错误")
+                }
+                is ConnectException -> {
+                    ClientException(RetCode.NETWORK_ERROR, "网络错误")
+                }
+                is UnknownHostException -> {
+                    ClientException(RetCode.NETWORK_ERROR, "网络错误")
+                }
+                is SocketTimeoutException -> {
+                    ClientException(RetCode.NETWORK_ERROR, "网络错误")
+                }
+                is HttpException -> {
+                    when (p1.code()) {
+                        500 -> ServerException(p1.code(), "服务器异常")
+                        404 -> ServerException(p1.code(), "网络错误")
+                        else -> p1
+                    }
+                }
+                else -> CommonException(p1.message ?: "")
+            }
+        }
+    }
+    var toastInvoke = object : ((String) -> Unit) {
+        override fun invoke(p1: String) {
+            p1.toast()
+        }
     }
 
     override fun onActivityPaused(activity: Activity) {
@@ -48,7 +91,7 @@ class APP : Application(), Application.ActivityLifecycleCallbacks {
     override fun onActivityResumed(activity: Activity) {
     }
 
-    var imageLoader= object : ImageLoader {
+    var imageLoader = object : ImageLoader {
         override fun displayImage(activity: Context?, path: Any?, imageView: ImageView?, width: Int, height: Int) {
         }
 
@@ -61,4 +104,4 @@ class APP : Application(), Application.ActivityLifecycleCallbacks {
     }
 }
 
-val api:API by lazy { NetManager.http.create(API::class.java) }
+val api: API by lazy { NetManager.http.create(API::class.java) }
