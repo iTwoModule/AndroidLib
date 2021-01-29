@@ -10,9 +10,9 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-import ink.itwo.android.common.Common;
 import okhttp3.Connection;
 import okhttp3.Headers;
 import okhttp3.Interceptor;
@@ -299,7 +299,7 @@ public class LoggingInterceptor implements Interceptor {
     }
 
     public static void log(String message) {
-        if (!Common.DEBUG) return;
+        if (Objects.requireNonNull(HttpManager.Companion.getInstance().getConfig()).getDEBUG()) return;
         if (message != null && message.length() > 4000) {
             split("iTwo_http", message);
         } else {

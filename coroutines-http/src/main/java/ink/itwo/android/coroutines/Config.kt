@@ -1,13 +1,16 @@
 package ink.itwo.android.coroutines
 
+import android.content.Context
 import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
 import retrofit2.Converter
 import retrofit2.converter.gson.GsonConverterFactory
 
 /** Created by wang on 2020/8/20. */
-class Config {
-    var root_url:String?=null
+abstract class Config {
+    abstract val root_url:String
+    abstract val DEBUG:Boolean
+    abstract val context:Context
     var defaultConnectTimeout = 10L
     var defaultWriteTimeout = 10L
     var defaultReadTimeout = 10L

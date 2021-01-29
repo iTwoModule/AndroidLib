@@ -27,10 +27,12 @@ class APP : Application(), Application.ActivityLifecycleCallbacks {
         super.onCreate()
         registerActivityLifecycleCallbacks(this)
         Common.init(this, debug = true, imageLoaderDefault = imageLoader)
-        NetManager.init(this, Config().apply {
-            root_url = "http://files.itwo.ink/"
-//            root_url="http://127.0.0.1:8080/apk/"
-        },  ScheduledThreadPoolExecutor(Common.maximumPoolSize).asCoroutineDispatcher() )
+        var config = object : Config() {
+            override val DEBUG = BuildConfig.DEBUG
+            override val context = this@APP
+            override val root_url = "http://files.itwo.ink/"
+        }
+        NetManager.init(this, config, ScheduledThreadPoolExecutor(Common.maximumPoolSize).asCoroutineDispatcher())
 
         CoroutinesKtx.init(handlerException = handlerException, toastInvoke = toastInvoke)
     }

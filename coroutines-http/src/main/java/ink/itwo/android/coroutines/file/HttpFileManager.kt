@@ -1,9 +1,6 @@
 package ink.itwo.android.coroutines.file
 
 import android.os.Looper
-import ink.itwo.android.common.RetCode
-import ink.itwo.android.common.ktx.log
-import ink.itwo.android.common.mimeType
 import ink.itwo.android.coroutines.NetManager.context
 import ink.itwo.android.coroutines.NetManager.executorCoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -78,7 +75,7 @@ class HttpFileManager {
         if (Looper.getMainLooper() == Looper.myLooper()) {
             throw RuntimeException("run on ui thread!")
         }
-        var result = DownLoadResult(url = downLoadInfo.url, result = true, code = RetCode.SUCCESS, key = downLoadInfo.key)
+        var result = DownLoadResult(url = downLoadInfo.url, result = true, code = 200, key = downLoadInfo.key)
         interceptors?.forEach { okHttpClientBuilder.addInterceptor(it) }
         downLoadInfo.progressListener?.let { okHttpClientBuilder.addInterceptor(DownloadProgressInterceptor(it)) }
         var client = okHttpClientBuilder.build()
@@ -94,7 +91,7 @@ class HttpFileManager {
         var file = File(path)
         if (file.parentFile?.exists() != true) {
             val mkdirs = file.parentFile?.mkdirs()
-            "file.parentFile mkdirs $mkdirs".log()
+//            "file.parentFile mkdirs $mkdirs".log()
         }
         if (file.exists() && downLoadInfo.delOld == true) {
             val delete = file.delete()
@@ -109,8 +106,8 @@ class HttpFileManager {
     }
 
     /** 文件上传*/
-    suspend fun up(info: UploadInfo): UploadResult {
-        var result = withContext(Dispatchers.IO) { upInternal(info) }
+    suspend fun up(info: UploadInfo,funFileMimeType:((File)->String?)?=null): UploadResult {
+        var result = withContext(Dispatchers.IO) { upInternal(info,funFileMimeType) }
         return suspendCoroutine {
             it.resume(result)
         }
@@ -131,17 +128,17 @@ class HttpFileManager {
     * */
 
     /** 并发上传*/
-    suspend fun upMulti(infoList: MutableList<UploadInfo>): MutableList<UploadResult> {
+    suspend fun upMulti(infoList: MutableList<UploadInfo>,funFileMimeType:((File)->String?)?=null): MutableList<UploadResult> {
         var list = withContext(Dispatchers.Default) {
-            infoList.map { info -> async(executorCoroutineDispatcher) { upInternal(info) } }.toMutableList().map { it.await() }.toMutableList()
+            infoList.map { info -> async(executorCoroutineDispatcher) { upInternal(info,funFileMimeType) } }.toMutableList().map { it.await() }.toMutableList()
         }
         return suspendCoroutine { it.resume(list) }
     }
 
     /** 一个请求上传多个文件*/
-    internal fun upInternal(info: UploadInfo): UploadResult {
+    internal fun upInternal(info: UploadInfo,funFileMimeType:((File)->String?)?=null): UploadResult {
 
-        var result = UploadResult(key = info.key ?: info.url, path = info.files.map { it.path }.toMutableList(), result = true, code = RetCode.SUCCESS)
+        var result = UploadResult(key = info.key ?: info.url, path = info.files.map { it.path }.toMutableList(), result = true, code = 200)
         if (info.files.isNullOrEmpty()) {
             result.message = "files is empty"
             return result
@@ -153,7 +150,7 @@ class HttpFileManager {
         val multipartBodyBuilder = MultipartBody.Builder()
         info.files.forEach { f ->
             var requestBody: RequestBody
-            val body = f.asRequestBody((f.mimeType ?: "application/octet-stream").toMediaType())
+            val body = f.asRequestBody((funFileMimeType?.invoke(f) ?: "application/octet-stream").toMediaType())
             requestBody = if (info.progressListener != null) {
                 var bodyProgress = UploadProgressResponseBody(body, info.progressListener)
                 bodyProgress
