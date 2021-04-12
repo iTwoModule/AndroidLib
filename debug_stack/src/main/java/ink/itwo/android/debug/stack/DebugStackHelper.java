@@ -32,6 +32,7 @@ import androidx.fragment.app.FragmentManager;
 /**
  Created by wang on 4/12/21. */
 public class DebugStackHelper {
+
     private static Context sContext;
     private static Stack<Activity> stack = new Stack<>();
     private static String broadcastAction = "Activity_Stack_Broadcast";
@@ -122,7 +123,7 @@ public class DebugStackHelper {
     private static void show() {
         Activity activity = stack.lastElement();
         DisplayMetrics dm = new DisplayMetrics();
-        activity.getDisplay().getRealMetrics(dm);
+        activity.getWindowManager().getDefaultDisplay().getRealMetrics(dm);
         float density = activity.getResources().getDisplayMetrics().density;
         int w = dm.widthPixels;
         int h = (int) (400 * density + 0.5f);
@@ -138,22 +139,25 @@ public class DebugStackHelper {
 
     private static void addView(TextView tvStack) {
         StringBuilder sb = new StringBuilder();
-        for (Activity activity : stack) {
+        for (int i = stack.size() - 1; i >= 0; i--) {
+            Activity activity = stack.get(i);
             sb.append("\n");
             sb.append("◉  ");
             sb.append(activity.getClass().getSimpleName());
             if (activity instanceof FragmentActivity) {
                 FragmentManager manager = ((FragmentActivity) activity).getSupportFragmentManager();
                 List<Fragment> fragments = manager.getFragments();
-                for (Fragment fm : fragments) {
-                    sb.append("\n");
-                    sb.append("     *  ");
+                for (int i1 = 0; i1 < fragments.size(); i1++) {
+                    Fragment fm = fragments.get(i1);
                     String simpleName = fm.getClass().getSimpleName();
-                    if (!"" .equals(simpleName)) {
+                    if (!"SupportRequestManagerFragment" .equals(simpleName)) {
+                        sb.append("\n");
+                        sb.append("     *  ");
                         sb.append(simpleName);
                     }
                 }
             }
+            sb.append("\n");
         }
         tvStack.setText(sb);
     }
