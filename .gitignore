@@ -30,3 +30,5 @@ pickerview/build
 media-picker/build
 mvvm/build
 skeleton/build
+debug_stack/build
+.gradle

@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
 
     fun success() {
         launch {
-            val result = io { api.userInfoSuccess() }
+            val result = io { api.userInfoSuccess() }.take()
         }
     }
 
