@@ -141,14 +141,17 @@ public class DebugStackHelper {
         for (Activity activity : stack) {
             sb.append("\n");
             sb.append("◉  ");
-            sb.append(activity.getClass().getName());
+            sb.append(activity.getClass().getSimpleName());
             if (activity instanceof FragmentActivity) {
                 FragmentManager manager = ((FragmentActivity) activity).getSupportFragmentManager();
                 List<Fragment> fragments = manager.getFragments();
                 for (Fragment fm : fragments) {
                     sb.append("\n");
                     sb.append("     *  ");
-                    sb.append(fm.getClass().getName());
+                    String simpleName = fm.getClass().getSimpleName();
+                    if ("" .equals(simpleName)) {
+                        sb.append(simpleName);
+                    }
                 }
             }
         }
