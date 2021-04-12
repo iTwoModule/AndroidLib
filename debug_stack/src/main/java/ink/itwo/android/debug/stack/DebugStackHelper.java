@@ -101,7 +101,7 @@ public class DebugStackHelper {
                     .setContentTitle("Activity Stack")
                     .setContentText("")
                     .setSmallIcon(R.mipmap.ic_debug_stack)
-                    .setContentIntent(PendingIntent.getBroadcast(sContext, 129, new Intent(broadcastAction), PendingIntent.FLAG_ONE_SHOT))
+                    .setContentIntent(PendingIntent.getBroadcast(sContext, 129, new Intent(broadcastAction), PendingIntent.FLAG_UPDATE_CURRENT))
 //                    .setAutoCancel(true)
                     .build();
         } else {
@@ -110,7 +110,7 @@ public class DebugStackHelper {
                     .setContentTitle("Activity Stack")
                     .setContentText("")
                     .setSmallIcon(R.mipmap.ic_debug_stack)
-                    .setContentIntent(PendingIntent.getBroadcast(sContext, 129, new Intent(broadcastAction), PendingIntent.FLAG_ONE_SHOT))
+                    .setContentIntent(PendingIntent.getBroadcast(sContext, 129, new Intent(broadcastAction), PendingIntent.FLAG_UPDATE_CURRENT))
 //                    .setAutoCancel(true)
                     .build();
 
