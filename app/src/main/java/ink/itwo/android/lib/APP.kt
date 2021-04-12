@@ -12,6 +12,7 @@ import ink.itwo.android.common.*
 import ink.itwo.android.coroutines.Config
 import ink.itwo.android.coroutines.NetManager
 import ink.itwo.android.coroutines.ktx.CoroutinesKtx
+import ink.itwo.android.debug.stack.DebugStackHelper
 import kotlinx.coroutines.asCoroutineDispatcher
 import org.json.JSONException
 import retrofit2.HttpException
@@ -35,6 +36,7 @@ class APP : Application(), Application.ActivityLifecycleCallbacks {
         NetManager.init(this, config, ScheduledThreadPoolExecutor(Common.maximumPoolSize).asCoroutineDispatcher())
 
         CoroutinesKtx.init(handlerException = handlerException, toastInvoke = toastInvoke)
+        DebugStackHelper.init(this)
     }
 
     var handlerException = object : (Exception) -> Exception {
