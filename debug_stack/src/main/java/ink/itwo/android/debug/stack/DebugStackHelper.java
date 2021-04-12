@@ -149,7 +149,7 @@ public class DebugStackHelper {
                     sb.append("\n");
                     sb.append("     *  ");
                     String simpleName = fm.getClass().getSimpleName();
-                    if ("" .equals(simpleName)) {
+                    if (!"" .equals(simpleName)) {
                         sb.append(simpleName);
                     }
                 }
